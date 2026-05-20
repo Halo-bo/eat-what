@@ -386,15 +386,15 @@ function drawDiceCanvas(canvas, context, angles, progress = 1, options = {}) {
   const bounce = Math.sin(progress * Math.PI) * (1 - progress) * size * 0.14;
   const squash = progress > 0.62 && progress < 0.78 ? 1 - Math.sin((progress - 0.62) / 0.16 * Math.PI) * 0.08 : 1;
   const center = { x: size / 2, y: size / 2 - bounce };
-  const scale = size * 0.28;
+  const scale = size * 0.3;
   const camera = 4.6;
 
   const shadowWidth = size * (0.46 + (1 - progress) * 0.12);
   context.save();
-  context.fillStyle = `rgba(34, 28, 23, ${0.24 + progress * 0.08})`;
-  context.filter = `blur(${size * 0.035}px)`;
+  context.fillStyle = `rgba(22, 24, 26, ${0.22 + progress * 0.12})`;
+  context.filter = `blur(${size * 0.045}px)`;
   context.beginPath();
-  context.ellipse(size / 2, size * 0.77, shadowWidth, size * 0.105, 0, 0, Math.PI * 2);
+  context.ellipse(size / 2, size * 0.78, shadowWidth, size * 0.095, 0, 0, Math.PI * 2);
   context.fill();
   context.restore();
 
@@ -432,32 +432,36 @@ function makeDiceFace(value, corners, normal) {
 
 function drawDiceFace(context, face, center, scale, camera, options = {}) {
   const points = face.corners.map((point) => projectPoint(point, center, scale, camera));
-  const light = Math.max(0, face.normal.x * -0.28 + face.normal.y * -0.48 + face.normal.z * 0.86);
-  const shade = Math.round(188 + light * 58);
-  const warm = Math.round(152 + light * 74);
+  const light = Math.max(0, face.normal.x * -0.2 + face.normal.y * -0.62 + face.normal.z * 0.9);
+  const white = Math.round(224 + light * 31);
+  const grey = Math.round(156 + light * 62);
 
   context.save();
-  roundedPolygonPath(context, points, scale * 0.22);
+  roundedPolygonPath(context, points, scale * 0.34);
 
   const gradient = context.createLinearGradient(points[0].x, points[0].y, points[2].x, points[2].y);
-  gradient.addColorStop(0, `rgb(255, 252, 244)`);
-  gradient.addColorStop(0.52, `rgb(248, ${Math.min(242, warm + 16)}, ${shade})`);
-  gradient.addColorStop(1, `rgb(${Math.max(176, shade - 20)}, ${Math.max(132, warm - 36)}, 96)`);
+  gradient.addColorStop(0, "rgb(255, 255, 255)");
+  gradient.addColorStop(0.5, `rgb(${white}, ${white}, ${white})`);
+  gradient.addColorStop(1, `rgb(${Math.max(136, grey - 24)}, ${Math.max(138, grey - 22)}, ${Math.max(144, grey - 16)})`);
   context.fillStyle = gradient;
-  context.shadowColor = "rgba(34, 28, 23, 0.18)";
-  context.shadowBlur = scale * 0.08;
-  context.shadowOffsetY = scale * 0.04;
+  context.shadowColor = "rgba(0, 0, 0, 0.18)";
+  context.shadowBlur = scale * 0.16;
+  context.shadowOffsetY = scale * 0.08;
   context.fill();
   context.clip();
 
-  context.lineWidth = scale * 0.16;
+  const edgeShade = Math.max(0, 0.24 - light * 0.16);
+  context.fillStyle = `rgba(20, 24, 30, ${edgeShade})`;
+  context.fillRect(0, 0, context.canvas.width, context.canvas.height);
+
+  context.lineWidth = scale * 0.12;
   context.lineJoin = "round";
-  context.strokeStyle = "rgba(255, 255, 255, 0.46)";
-  roundedPolygonPath(context, points, scale * 0.22);
+  context.strokeStyle = "rgba(255, 255, 255, 0.34)";
+  roundedPolygonPath(context, points, scale * 0.34);
   context.stroke();
   context.lineWidth = scale * 0.055;
-  context.strokeStyle = "rgba(74, 45, 25, 0.16)";
-  roundedPolygonPath(context, points, scale * 0.22);
+  context.strokeStyle = "rgba(48, 52, 58, 0.16)";
+  roundedPolygonPath(context, points, scale * 0.34);
   context.stroke();
 
   drawFaceHighlight(context, points, scale);
@@ -477,7 +481,7 @@ function roundedPolygonPath(context, points, radius) {
     const next = points[(index + 1) % count];
     const distanceToPrevious = Math.hypot(point.x - previous.x, point.y - previous.y);
     const distanceToNext = Math.hypot(point.x - next.x, point.y - next.y);
-    const cornerRadius = Math.min(clampedRadius, distanceToPrevious * 0.38, distanceToNext * 0.38);
+    const cornerRadius = Math.min(clampedRadius, distanceToPrevious * 0.48, distanceToNext * 0.48);
     const from = {
       x: point.x + (previous.x - point.x) / distanceToPrevious * cornerRadius,
       y: point.y + (previous.y - point.y) / distanceToPrevious * cornerRadius,
@@ -498,18 +502,18 @@ function roundedPolygonPath(context, points, radius) {
 function drawFaceHighlight(context, points, scale) {
   const x = points.reduce((sum, point) => sum + point.x, 0) / points.length;
   const y = points.reduce((sum, point) => sum + point.y, 0) / points.length;
-  const gradient = context.createRadialGradient(x - scale * 0.28, y - scale * 0.24, 0, x, y, scale * 1.15);
-  gradient.addColorStop(0, "rgba(255, 255, 255, 0.42)");
-  gradient.addColorStop(0.44, "rgba(255, 255, 255, 0.08)");
-  gradient.addColorStop(1, "rgba(105, 61, 30, 0.16)");
+  const gradient = context.createRadialGradient(x - scale * 0.34, y - scale * 0.32, 0, x, y, scale * 1.24);
+  gradient.addColorStop(0, "rgba(255, 255, 255, 0.64)");
+  gradient.addColorStop(0.38, "rgba(255, 255, 255, 0.14)");
+  gradient.addColorStop(1, "rgba(76, 82, 92, 0.2)");
   context.fillStyle = gradient;
   context.fillRect(0, 0, context.canvas.width, context.canvas.height);
 
   context.save();
   context.globalCompositeOperation = "screen";
-  context.lineWidth = scale * 0.075;
+  context.lineWidth = scale * 0.09;
   context.lineCap = "round";
-  context.strokeStyle = "rgba(255, 255, 255, 0.34)";
+  context.strokeStyle = "rgba(255, 255, 255, 0.52)";
   context.beginPath();
   context.moveTo(lerp(points[0].x, points[1].x, 0.22), lerp(points[0].y, points[1].y, 0.22));
   context.quadraticCurveTo(
@@ -535,18 +539,31 @@ function drawPips(context, value, corners, center, scale, camera) {
   layouts[value].forEach(([u, v]) => {
     const point = bilinearPoint(a, b, c, d, 0.5 + u * 0.5, 0.5 + v * 0.5);
     const projected = projectPoint(point, center, scale, camera);
-    const radius = Math.max(3.4, projected.scale * scale * 0.105);
-    const pipGradient = context.createRadialGradient(projected.x - radius * 0.34, projected.y - radius * 0.38, radius * 0.1, projected.x, projected.y, radius);
-    pipGradient.addColorStop(0, "#50423a");
-    pipGradient.addColorStop(0.6, "#15110f");
-    pipGradient.addColorStop(1, "#020202");
+    const radius = Math.max(4.2, projected.scale * scale * 0.12);
+
+    context.save();
+    const dent = context.createRadialGradient(projected.x - radius * 0.28, projected.y - radius * 0.42, radius * 0.18, projected.x, projected.y, radius * 1.42);
+    dent.addColorStop(0, "rgba(255, 255, 255, 0.24)");
+    dent.addColorStop(0.32, "rgba(94, 98, 104, 0.3)");
+    dent.addColorStop(1, "rgba(0, 0, 0, 0.2)");
+    context.fillStyle = dent;
+    context.beginPath();
+    context.ellipse(projected.x, projected.y + radius * 0.04, radius * 1.16, radius * 1.02, 0, 0, Math.PI * 2);
+    context.fill();
+
+    const pipGradient = context.createRadialGradient(projected.x - radius * 0.3, projected.y - radius * 0.34, radius * 0.14, projected.x, projected.y, radius);
+    pipGradient.addColorStop(0, "#2b3034");
+    pipGradient.addColorStop(0.52, "#070809");
+    pipGradient.addColorStop(1, "#000000");
     context.fillStyle = pipGradient;
     context.beginPath();
     context.ellipse(projected.x, projected.y, radius, radius * 0.9, 0, 0, Math.PI * 2);
     context.fill();
-    context.strokeStyle = "rgba(255, 255, 255, 0.22)";
-    context.lineWidth = Math.max(1, radius * 0.13);
+
+    context.strokeStyle = "rgba(255, 255, 255, 0.18)";
+    context.lineWidth = Math.max(1, radius * 0.12);
     context.stroke();
+    context.restore();
   });
 }
 

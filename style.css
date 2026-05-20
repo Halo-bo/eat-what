@@ -364,14 +364,15 @@ button {
   place-items: center;
   width: var(--dice-size);
   height: var(--dice-size);
-  color: rgba(132, 39, 29, 0.9);
+  color: rgba(5, 7, 9, 0.92);
   background: transparent;
-  font-size: 2.9rem;
+  font-size: 3rem;
   font-weight: 950;
   line-height: 1;
   text-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.7),
-    0 8px 16px rgba(74, 45, 25, 0.18);
+    0 -1px 0 rgba(255, 255, 255, 0.24),
+    0 2px 3px rgba(255, 255, 255, 0.22),
+    0 8px 14px rgba(0, 0, 0, 0.22);
   transform: rotate(-8deg) translateY(-2px);
   pointer-events: none;
 }

@@ -70,7 +70,7 @@ button {
 .brand {
   position: relative;
   z-index: 6;
-  padding: 24px 28px 0;
+  padding: 20px 28px 0;
 }
 
 .brand p,
@@ -83,11 +83,30 @@ button {
   text-transform: uppercase;
 }
 
-.brand h1 {
+.brand p {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  padding: 5px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.76);
+  border-radius: 999px;
+  background: rgba(255, 248, 233, 0.72);
+  box-shadow: 0 8px 18px rgba(121, 65, 28, 0.12);
+  backdrop-filter: blur(6px);
+}
+
+.brand-logo {
   margin: 0;
-  font-size: clamp(3.4rem, 8vw, 7.2rem);
-  line-height: 0.92;
-  letter-spacing: 0;
+  width: min(580px, 76vw);
+  line-height: 0;
+}
+
+.brand-logo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  mix-blend-mode: multiply;
+  filter: drop-shadow(0 14px 0 rgba(255, 255, 255, 0.38)) drop-shadow(0 18px 24px rgba(122, 56, 21, 0.18));
 }
 
 .board-wrap {
@@ -1671,6 +1690,10 @@ button {
 
   .brand {
     padding: 14px 14px 0;
+  }
+
+  .brand-logo {
+    width: min(420px, 92vw);
   }
 
   .brand p,

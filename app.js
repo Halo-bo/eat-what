@@ -54,46 +54,26 @@ const pathCells = [
 ];
 
 const foods = [
-  { name: "牛肉面", emoji: "🍜", kind: "warm", tag: "热汤", image: "beef-noodle-soup", vibe: "一口汤下去，今天的电量先回到 72%。" },
-  { name: "麻辣烫", emoji: "🌶️", kind: "spicy", tag: "开胃", image: "spicy-hot-pot", vibe: "万物皆可烫，选择困难也被煮熟了。" },
-  { name: "砂锅粥", emoji: "🥣", kind: "light", tag: "养胃", image: "congee-bowl", vibe: "适合让胃坐上软沙发，安静充一会儿电。" },
-  { name: "炸鸡汉堡", emoji: "🍔", kind: "fun", tag: "快乐", image: "fried-chicken-burger", vibe: "今天不讲武德，先把快乐安排到位。" },
-  { name: "咖喱饭", emoji: "🍛", kind: "warm", tag: "浓郁", image: "japanese-curry-rice", vibe: "浓、稳、直接，像一个不拐弯的好决定。" },
-  { name: "寿司饭团", emoji: "🍣", kind: "light", tag: "清爽", image: "sushi-platter", vibe: "吃完还像个清醒的人，甚至想整理桌面。" },
-  { name: "火锅冒菜", emoji: "🍲", kind: "spicy", tag: "热闹", image: "chinese-hot-pot", vibe: "适合把食欲开到最大档，顺手驱散低气压。" },
-  { name: "煎饺馄饨", emoji: "🥟", kind: "warm", tag: "踏实", image: "dumplings-wonton", vibe: "一半脆一半软，专治今天的摇摆不定。" },
-  { name: "螺蛳粉", emoji: "🍜", kind: "spicy", tag: "上头", image: "spicy-rice-noodles", vibe: "需要一点鲜明态度时，它会很有存在感。" },
-  { name: "烤肉拌饭", emoji: "🍚", kind: "fun", tag: "饱足", image: "korean-bibimbap", vibe: "米饭负责兜底，烤肉负责把人哄好。" },
-  { name: "轻食沙拉", emoji: "🥗", kind: "light", tag: "清净", image: "fresh-salad-bowl", vibe: "不是委屈，是给身体一个体面的台阶。" },
-  { name: "烧鸟串串", emoji: "🍢", kind: "warm", tag: "慢吃", image: "yakitori-skewers", vibe: "适合慢慢咬，把今天的小烦恼一串串放下。" },
-  { name: "酸菜鱼", emoji: "🐟", kind: "spicy", tag: "醒神", image: "sichuan-fish-soup", vibe: "酸负责开路，辣负责催你重新做人。" },
-  { name: "茶餐厅", emoji: "🥪", kind: "fun", tag: "全能", image: "hong-kong-cafe-food", vibe: "想不清楚时，交给一个菜单很厚的地方。" },
-  { name: "越南粉", emoji: "🍲", kind: "light", tag: "清香", image: "vietnamese-pho", vibe: "热汤里带点清爽，像给脑袋开了窗。" },
-  { name: "披萨", emoji: "🍕", kind: "fun", tag: "分享", image: "pizza-slices", vibe: "适合把今天切成几块，一块一块解决。" },
-  { name: "生煎包", emoji: "🥟", kind: "warm", tag: "爆汁", image: "pan-fried-dumplings", vibe: "小心烫，也小心突然开心。" },
-  { name: "泰式炒粉", emoji: "🍝", kind: "spicy", tag: "酸辣", image: "pad-thai-noodles", vibe: "酸甜辣一起来，专门对付没精神。" },
-  { name: "甜品刨冰", emoji: "🍧", kind: "sweet", tag: "降温", image: "shaved-ice-dessert", vibe: "不是正餐，但有时候灵魂就需要先吃甜的。" },
-  { name: "卤肉饭", emoji: "🍚", kind: "warm", tag: "香气", image: "braised-pork-rice", vibe: "朴素但很会安慰人，像厨房里的拥抱。" },
-  { name: "烤鱼", emoji: "🐟", kind: "spicy", tag: "聚气", image: "grilled-fish-dish", vibe: "一整锅热闹，适合把饭点变成事件。" },
-  { name: "日式拉面", emoji: "🍜", kind: "warm", tag: "治愈", image: "ramen-bowl", vibe: "汤、面、蛋都到位，人生暂时不需要太复杂。" },
-  { name: "豆花米线", emoji: "🥣", kind: "light", tag: "柔软", image: "rice-noodle-soup", vibe: "软软热热，像给今天按了静音键。" },
-  { name: "小龙虾", emoji: "🦞", kind: "fun", tag: "仪式", image: "crayfish-dish", vibe: "适合把袖子卷起来，认真快乐一场。" },
-  { name: "海南鸡饭", emoji: "🍗", kind: "light", tag: "清香", image: "hainanese-chicken-rice", vibe: "鸡肉和米饭都很稳，像一份不吵闹的照顾。" },
-  { name: "韩式部队锅", emoji: "🥘", kind: "spicy", tag: "热闹", image: "korean-army-stew", vibe: "咕嘟咕嘟一锅，专治饭点冷场。" },
-  { name: "墨西哥卷饼", emoji: "🌯", kind: "fun", tag: "满足", image: "burrito-wrap", vibe: "把肉、菜、酱都卷起来，也把犹豫卷走。" },
-  { name: "法式可颂", emoji: "🥐", kind: "sweet", tag: "松弛", image: "croissant-coffee", vibe: "不一定正餐，但能让今天变得很会生活。" },
-  { name: "羊肉串", emoji: "🍖", kind: "warm", tag: "烟火", image: "lamb-skewers", vibe: "炭火一来，饭运就有了街边的灵魂。" },
-  { name: "海鲜意面", emoji: "🍝", kind: "fun", tag: "鲜香", image: "seafood-pasta", vibe: "有点精致，也有点任性，适合认真奖励自己。" },
-  { name: "广式早茶", emoji: "🥟", kind: "light", tag: "从容", image: "dim-sum-table", vibe: "点心慢慢上，心情慢慢顺。" },
-  { name: "芝士焗饭", emoji: "🧀", kind: "warm", tag: "拉丝", image: "cheese-baked-rice", vibe: "拉丝就是今天的安全感证明。" },
-  { name: "烤冷面", emoji: "🥞", kind: "fun", tag: "街头", image: "street-food-noodles", vibe: "有点随性，有点香，适合临时起意的快乐。" },
-  { name: "椰子鸡", emoji: "🥥", kind: "light", tag: "鲜甜", image: "coconut-chicken-hotpot", vibe: "清甜热汤，像把疲惫温柔地泡开。" },
-  { name: "椒麻鸡", emoji: "🍗", kind: "spicy", tag: "麻香", image: "spicy-chicken-dish", vibe: "麻香一上来，整个人会精神一点。" },
-  { name: "蛋包饭", emoji: "🍳", kind: "fun", tag: "可爱", image: "omurice", vibe: "软乎乎盖住米饭，也盖住今天的一点小烦。" },
-  { name: "韩式烤肉", emoji: "🥩", kind: "fun", tag: "滋滋", image: "korean-bbq", vibe: "滋滋作响的时候，人很难继续不开心。" },
-  { name: "烤鸭卷", emoji: "🫓", kind: "fun", tag: "酥香", image: "peking-duck-wrap", vibe: "一卷下去，仪式感和满足感同时到场。" },
-  { name: "番茄牛腩饭", emoji: "🍅", kind: "warm", tag: "酸甜", image: "tomato-beef-rice", vibe: "酸甜热乎，很适合把今天从皱巴巴里熨平。" },
-  { name: "抹茶蛋糕", emoji: "🍰", kind: "sweet", tag: "治愈", image: "matcha-cake", vibe: "甜得不吵，像给心情盖了一条小毯子。" },
+  { name: "草莓", kind: "sweet", tag: "酸甜", icon: "strawberry", vibe: "红红一颗，像今天的小好运先亮了灯。" },
+  { name: "橙子", kind: "light", tag: "清爽", icon: "orange", vibe: "一口清亮，适合把脑袋里的雾擦干净。" },
+  { name: "冰激凌", kind: "sweet", tag: "降温", icon: "ice-cream", vibe: "不是正餐，但快乐有时候需要先上桌。" },
+  { name: "蔓越莓", kind: "sweet", tag: "元气", icon: "cranberry", vibe: "酸甜小颗粒，专门负责把心情调亮一点。" },
+  { name: "开心果", kind: "fun", tag: "开口笑", icon: "pistachio", vibe: "名字都这么会营业，今天值得笑一下。" },
+  { name: "梨", kind: "light", tag: "润润", icon: "pear", vibe: "清清甜甜，适合给今天降一点火气。" },
+  { name: "汉堡", kind: "fun", tag: "快乐", icon: "burger", vibe: "上下都夹好了，连犹豫也一起夹住。" },
+  { name: "芒果", kind: "sweet", tag: "香甜", icon: "mango", vibe: "甜得很有阳光感，像把下午提前过好。" },
+  { name: "牛油果", kind: "light", tag: "绵密", icon: "avocado", vibe: "软软稳稳，适合走一个不费劲的精致路线。" },
+  { name: "核桃", kind: "warm", tag: "补脑", icon: "walnut", vibe: "适合给脑子加点燃料，然后继续假装很聪明。" },
+  { name: "牛奶", kind: "light", tag: "温柔", icon: "milk", vibe: "今天如果有点吵，就用一杯温柔收尾。" },
+  { name: "松子", kind: "warm", tag: "小香", icon: "pine-nut", vibe: "小小一颗，但香气很会给饭运撑场面。" },
+  { name: "披萨", kind: "fun", tag: "分享", icon: "pizza", vibe: "适合把烦恼切成几块，一块一块解决。" },
+  { name: "夏威夷果", kind: "warm", tag: "脆香", icon: "macadamia", vibe: "圆滚滚的满足感，今天就该吃点可爱的。" },
+  { name: "甜甜圈", kind: "sweet", tag: "圆满", icon: "donut", vibe: "一个圈圈，帮今天把快乐闭环。" },
+  { name: "吐司", kind: "warm", tag: "松软", icon: "toast", vibe: "朴素但可靠，像早晨给你留的一盏灯。" },
+  { name: "榛子", kind: "warm", tag: "坚果香", icon: "hazelnut", vibe: "香气低调但很稳，适合一点点补满能量。" },
+  { name: "腰果", kind: "fun", tag: "弯弯", icon: "cashew", vibe: "弯得很有态度，今天允许路线不那么直。" },
+  { name: "杏仁", kind: "light", tag: "清香", icon: "almond", vibe: "轻轻脆脆，像给今天加一个利落的标点。" },
+  { name: "奇异果", kind: "sweet", tag: "醒神", icon: "kiwi", vibe: "酸甜里带点俏皮，很适合打破饭点沉默。" },
 ];
 
 const fortunes = [
@@ -177,8 +157,15 @@ function applyCharacter(characterKey) {
 }
 
 function shuffleBoard() {
-  state.board = shuffle([...foods]).slice(0, pathCells.length - 1);
+  state.board = createBoardFoods();
   renderBoard();
+}
+
+function createBoardFoods() {
+  const targetCount = pathCells.length - 1;
+  const shuffled = shuffle([...foods]);
+  const extras = shuffle([...foods]).slice(0, Math.max(0, targetCount - shuffled.length));
+  return [...shuffled, ...extras].slice(0, targetCount);
 }
 
 function renderBoard() {
@@ -213,10 +200,9 @@ function renderBoard() {
       const food = state.board[pathIndex - 1];
       tile.classList.add(`kind-${food.kind}`);
       tile.dataset.index = pathIndex;
-      tile.style.setProperty("--tile-image", `url("${getFoodImage(food, 240, 180)}")`);
       tile.innerHTML = `
         <span class="index">${String(pathIndex).padStart(2, "0")}</span>
-        <span class="thumb">${food.emoji}</span>
+        <span class="thumb"><img src="${getFoodIcon(food)}" alt="" /></span>
         <strong>${food.name}</strong>
         <small>${food.tag}</small>
       `;
@@ -272,10 +258,9 @@ function getStartRewardFood(roll) {
   const fallback = state.board[roll % state.board.length];
   return {
     name: "起点补给",
-    emoji: "🍱",
     kind: "fun",
     tag: "再开饭",
-    image: fallback.image,
+    icon: fallback.icon,
     vibe: "你绕回了起点，说明饭运正在重启。今天适合加一份小吃，或者把刚刚最心动的那格直接收入菜单。",
   };
 }
@@ -619,14 +604,14 @@ function updateCenterStage(food, status) {
   }
 
   centerFoodName.textContent = `${food.name} · ${food.tag}`;
-  foodEmoji.textContent = food.emoji;
-  foodImage.src = getFoodImage(food, 640, 480);
+  foodEmoji.textContent = "";
+  foodImage.src = getFoodIcon(food);
   foodImage.alt = food.name;
   foodPhoto.className = `food-photo kind-${food.kind}`;
 }
 
-function getFoodImage(food, width, height) {
-  return `assets/foods/${food.image}.jpg`;
+function getFoodIcon(food) {
+  return `assets/iconfont-food/${food.icon}.svg`;
 }
 
 function buildReason(food, roll, fortuneSteps) {

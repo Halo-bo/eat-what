@@ -128,11 +128,9 @@ button {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.62), rgba(255, 255, 255, 0.86)),
-    var(--tile-image);
-  background-size: cover;
-  background-position: center;
-  opacity: 0.34;
+    radial-gradient(circle at 24% 18%, rgba(255, 255, 255, 0.74), transparent 32%),
+    radial-gradient(circle at 82% 80%, rgba(255, 214, 122, 0.22), transparent 34%);
+  opacity: 0.9;
 }
 
 .tile > * {
@@ -161,13 +159,19 @@ button {
 .tile .thumb {
   display: grid;
   place-items: center;
-  width: 34px;
-  height: 34px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.76);
-  font-size: 1.35rem;
   line-height: 1;
   box-shadow: 0 8px 16px rgba(34, 28, 23, 0.12);
+}
+
+.tile .thumb img {
+  display: block;
+  width: 82%;
+  height: 82%;
+  object-fit: contain;
 }
 
 .tile strong {
@@ -287,8 +291,8 @@ button {
   border: 3px solid rgba(34, 28, 23, 0.08);
   border-radius: 24px;
   background:
-    radial-gradient(circle at 50% 54%, rgba(255, 255, 255, 0.48) 0 38%, transparent 39%),
-    linear-gradient(135deg, #fff8ec, #f4dcc0);
+    radial-gradient(circle at 50% 54%, rgba(255, 255, 255, 0.72) 0 38%, transparent 39%),
+    linear-gradient(135deg, #fff8ec, #ffe2ed 48%, #dff6ff);
   background-color: #fff8ec;
   background-blend-mode: normal;
   box-shadow: inset 0 -16px 0 rgba(34, 28, 23, 0.06), 0 20px 36px rgba(79, 49, 22, 0.14);
@@ -300,7 +304,9 @@ button {
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(34, 28, 23, 0.18));
+  background:
+    radial-gradient(circle at 22% 18%, rgba(255, 255, 255, 0.7), transparent 28%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(34, 28, 23, 0.1));
   box-shadow: none;
   pointer-events: none;
 }
@@ -309,11 +315,12 @@ button {
   position: relative;
   z-index: 1;
   display: block;
-  width: 100%;
-  height: 100%;
+  width: 86%;
+  height: 86%;
   object-fit: contain;
   object-position: center;
-  padding: 10px;
+  padding: 16px;
+  filter: drop-shadow(0 18px 18px rgba(34, 28, 23, 0.16));
 }
 
 .food-photo img:not([src]) {
@@ -333,6 +340,10 @@ button {
   background: rgba(255, 255, 255, 0.82);
   font-size: clamp(1.6rem, 4vw, 2.4rem);
   filter: drop-shadow(0 10px 12px rgba(34, 28, 23, 0.22));
+}
+
+.food-photo span:empty {
+  display: none;
 }
 
 .board-dice {

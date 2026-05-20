@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>吃点啥 · 美食大富翁</title>
-    <link rel="stylesheet" href="./style.css?v=dice-pad" />
+    <link rel="stylesheet" href="./style.css?v=character-avatars" />
   </head>
   <body>
     <main class="game-shell">
@@ -19,8 +19,8 @@
           <section class="center-stage" aria-label="角色状态和美食详情">
             <div class="center-scene">
               <div class="character corgi large sitting" id="centerCharacter" aria-hidden="true">
-                <img class="character-photo corgi-photo" src="./assets/characters/corgi.png" alt="" />
-                <img class="character-photo bluecat-photo" src="./assets/characters/bluecat.png" alt="" />
+                <img class="character-photo corgi-photo" src="./assets/characters/corgi.png?v=character-avatars" alt="" />
+                <img class="character-photo bluecat-photo" src="./assets/characters/bluecat.png?v=character-avatars" alt="" />
                 <span class="ear left"></span>
                 <span class="ear right"></span>
                 <span class="face"></span>
@@ -45,8 +45,8 @@
             <button class="board-dice unknown" id="boardDice" aria-label="在棋盘右下角掷骰子"></button>
           </div>
           <div class="character corgi small mascot sitting" id="mascot" aria-label="行走中的角色">
-            <img class="character-photo corgi-photo" src="./assets/characters/corgi.png" alt="" />
-            <img class="character-photo bluecat-photo" src="./assets/characters/bluecat.png" alt="" />
+            <img class="character-photo corgi-photo" src="./assets/characters/corgi.png?v=character-avatars" alt="" />
+            <img class="character-photo bluecat-photo" src="./assets/characters/bluecat.png?v=character-avatars" alt="" />
             <span class="ear left"></span>
             <span class="ear right"></span>
             <span class="face"></span>
@@ -92,11 +92,11 @@
           </div>
           <div class="character-options" id="characterOptions">
             <button class="character-option active" data-character="corgi">
-              <span>🐶</span>
+              <img class="character-choice-avatar" src="./assets/characters/corgi.png?v=character-avatars" alt="" />
               胖柯基
             </button>
             <button class="character-option" data-character="bluecat">
-              <span>🐱</span>
+              <img class="character-choice-avatar" src="./assets/characters/bluecat.png?v=character-avatars" alt="" />
               蓝猫
             </button>
           </div>
@@ -117,6 +117,6 @@
       </aside>
     </main>
 
-    <script src="./app.js?v=dice-pad"></script>
+    <script src="./app.js?v=character-avatars"></script>
   </body>
 </html>

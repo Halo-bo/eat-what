@@ -901,7 +901,7 @@ button {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 36%;
+  object-position: center;
   pointer-events: none;
 }
 
@@ -929,11 +929,11 @@ button {
 .character.bluecat .bluecat-photo {
   display: block;
   border: 3px solid rgba(255, 255, 255, 0.74);
-  border-radius: 46% 46% 42% 42%;
+  border-radius: 50%;
   box-shadow:
     inset 0 -14px 24px rgba(34, 28, 23, 0.16),
     0 18px 30px rgba(34, 28, 23, 0.2);
-  transform-origin: 50% 72%;
+  transform-origin: 50% 60%;
 }
 
 .character.corgi .ear,
@@ -956,7 +956,8 @@ button {
 .character.large.corgi,
 .character.large.bluecat {
   width: min(184px, 100%);
-  height: 196px;
+  aspect-ratio: 1;
+  height: auto;
 }
 
 .character.large.corgi.sitting,
@@ -966,33 +967,25 @@ button {
 
 .character.large.corgi .corgi-photo,
 .character.large.bluecat .bluecat-photo {
-  object-position: center 42%;
-  border-radius: 46% 46% 44% 44%;
+  object-position: center;
+  border-radius: 50%;
   animation: corgi-photo-breathe 2.8s ease-in-out infinite;
 }
 
 .character.small.corgi,
 .character.small.bluecat {
   width: 56px;
-  height: 62px;
+  height: 56px;
 }
 
 .character.small.corgi .corgi-photo,
 .character.small.bluecat .bluecat-photo {
   border-width: 2px;
   border-radius: 50%;
-  object-position: center 30%;
+  object-position: center;
   box-shadow:
     inset 0 -8px 14px rgba(34, 28, 23, 0.16),
     0 8px 16px rgba(34, 28, 23, 0.2);
-}
-
-.character.bluecat .bluecat-photo {
-  object-position: center 43%;
-}
-
-.character.small.bluecat .bluecat-photo {
-  object-position: center 32%;
 }
 
 .character.corgi.walking .corgi-photo,
@@ -1587,8 +1580,14 @@ button {
   font-weight: 900;
 }
 
-.character-option span {
-  font-size: 1.55rem;
+.character-choice-avatar {
+  display: block;
+  width: 38px;
+  height: 38px;
+  border: 2px solid rgba(255, 255, 255, 0.88);
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 8px 14px rgba(34, 28, 23, 0.14);
 }
 
 .character-option.active {
@@ -1748,7 +1747,7 @@ button {
   .character.large.corgi,
   .character.large.bluecat {
     width: 72px;
-    height: 82px;
+    height: 72px;
   }
 
   .character.large.corgi .corgi-photo,
@@ -1875,8 +1874,9 @@ button {
     font-size: 0.82rem;
   }
 
-  .character-option span {
-    font-size: 1.35rem;
+  .character-choice-avatar {
+    width: 34px;
+    height: 34px;
   }
 
   .actions {
@@ -1929,7 +1929,7 @@ button {
   .character.large.corgi,
   .character.large.bluecat {
     width: 62px;
-    height: 72px;
+    height: 62px;
   }
 
   .board-dice {

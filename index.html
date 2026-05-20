@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>吃点啥 · 美食大富翁</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <main class="game-shell">
+      <section class="stage">
+        <header class="brand">
+          <p>今日饭运局</p>
+          <h1>吃点啥</h1>
+        </header>
+
+        <section class="board-wrap" aria-label="美食棋盘">
+          <div class="board" id="board"></div>
+          <section class="center-stage" aria-label="角色状态和美食详情">
+            <div class="center-scene">
+              <div class="character corgi large sitting" id="centerCharacter" aria-hidden="true">
+                <img class="character-photo corgi-photo" src="./assets/characters/corgi.png" alt="" />
+                <img class="character-photo bluecat-photo" src="./assets/characters/bluecat.png" alt="" />
+                <span class="ear left"></span>
+                <span class="ear right"></span>
+                <span class="face"></span>
+                <span class="snout"></span>
+                <span class="body"></span>
+                <span class="belly"></span>
+                <span class="leg left"></span>
+                <span class="leg right"></span>
+                <span class="tail"></span>
+              </div>
+              <div class="food-photo" id="foodPhoto">
+                <img id="foodImage" alt="" />
+                <span id="foodEmoji">🍽️</span>
+              </div>
+              <button class="board-dice unknown" id="boardDice" aria-label="在棋盘上掷骰子"></button>
+            </div>
+            <div class="center-copy">
+              <p id="characterMood">胖柯基正在乖乖坐着等开饭</p>
+              <strong id="centerFoodName">掷骰后揭晓</strong>
+            </div>
+          </section>
+          <div class="character corgi small mascot sitting" id="mascot" aria-label="行走中的角色">
+            <img class="character-photo corgi-photo" src="./assets/characters/corgi.png" alt="" />
+            <img class="character-photo bluecat-photo" src="./assets/characters/bluecat.png" alt="" />
+            <span class="ear left"></span>
+            <span class="ear right"></span>
+            <span class="face"></span>
+            <span class="snout"></span>
+            <span class="body"></span>
+            <span class="belly"></span>
+            <span class="leg left"></span>
+            <span class="leg right"></span>
+            <span class="tail"></span>
+          </div>
+        </section>
+      </section>
+
+      <aside class="control-panel">
+        <section class="oracle">
+          <div class="dice unknown" id="dice" aria-label="骰子点数"></div>
+          <div>
+            <p class="kicker">命运刚刚把筷子递过来</p>
+            <h2 id="resultTitle">先掷一把</h2>
+            <p id="resultText">棋盘已经摆好。选一个饭搭子，点一下骰子，它会走到今天该吃的那一格。</p>
+          </div>
+        </section>
+
+        <section class="signals" aria-label="今日信号">
+          <div>
+            <span>天气</span>
+            <strong id="weatherText">读取中</strong>
+          </div>
+          <div>
+            <span>运势</span>
+            <strong id="fortuneText">开局待定</strong>
+          </div>
+          <div>
+            <span>玄学</span>
+            <strong id="mysticText">锅气校准中</strong>
+          </div>
+        </section>
+
+        <section class="characters" aria-label="角色选择">
+          <div class="section-head">
+            <h2>选择饭搭子</h2>
+            <span id="characterName">胖柯基</span>
+          </div>
+          <div class="character-options" id="characterOptions">
+            <button class="character-option active" data-character="corgi">
+              <span>🐶</span>
+              胖柯基
+            </button>
+            <button class="character-option" data-character="bluecat">
+              <span>🐱</span>
+              蓝猫
+            </button>
+          </div>
+        </section>
+
+        <div class="actions">
+          <button class="primary" id="rollBtn">掷骰子</button>
+          <button class="secondary" id="shuffleBtn">换一张棋盘</button>
+        </div>
+
+        <section class="log-panel">
+          <div class="section-head">
+            <h2>今日落点</h2>
+            <span id="stepText">未开走</span>
+          </div>
+          <ol id="moveLog"></ol>
+        </section>
+      </aside>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>

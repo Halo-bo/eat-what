@@ -1,0 +1,236 @@
+{
+  "beef-noodle-soup": {
+    "query": "beef noodle soup",
+    "title": "File:Spicy noodle soup with beef, Festival des Pâtes, Paris 001.jpg",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Spicy_noodle_soup_with_beef,_Festival_des_P%C3%A2tes,_Paris_001.jpg",
+    "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Spicy_noodle_soup_with_beef%2C_Festival_des_P%C3%A2tes%2C_Paris_001.jpg/960px-Spicy_noodle_soup_with_beef%2C_Festival_des_P%C3%A2tes%2C_Paris_001.jpg",
+    "file": "assets/foods/beef-noodle-soup.jpg"
+  },
+  "fried-chicken-burger": {
+    "query": "fried chicken burger",
+    "title": "File:Fried chicken Burger in Milan, Italy.jpg",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Fried_chicken_Burger_in_Milan,_Italy.jpg",
+    "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Fried_chicken_Burger_in_Milan%2C_Italy.jpg/960px-Fried_chicken_Burger_in_Milan%2C_Italy.jpg",
+    "file": "assets/foods/fried-chicken-burger.jpg"
+  },
+  "japanese-curry-rice": {
+    "query": "japanese curry rice",
+    "title": "File:Pork loin cutlet curry rice of Matsunoya.JPG",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Pork_loin_cutlet_curry_rice_of_Matsunoya.JPG",
+    "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Pork_loin_cutlet_curry_rice_of_Matsunoya.JPG/960px-Pork_loin_cutlet_curry_rice_of_Matsunoya.JPG",
+    "file": "assets/foods/japanese-curry-rice.jpg"
+  },
+  "sushi-platter": {
+    "query": "sushi platter",
+    "title": "File:Sushi platter.jpg",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Sushi_platter.jpg",
+    "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Sushi_platter.jpg/960px-Sushi_platter.jpg",
+    "file": "assets/foods/sushi-platter.jpg"
+  },
+  "chinese-hot-pot": {
+    "query": "chinese hot pot",
+    "title": "File:Hai Di Lao Hot Pot Food.jpg",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Hai_Di_Lao_Hot_Pot_Food.jpg",
+    "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Hai_Di_Lao_Hot_Pot_Food.jpg/960px-Hai_Di_Lao_Hot_Pot_Food.jpg",
+    "file": "assets/foods/chinese-hot-pot.jpg"
+  },
+  "dumplings-wonton": {
+    "query": "Dumplings on a blue plate.jpg",
+    "title": "File:Dumplings on a blue plate.jpg",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Dumplings_on_a_blue_plate.jpg",
+    "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Dumplings_on_a_blue_plate.jpg/1280px-Dumplings_on_a_blue_plate.jpg",
+    "file": "assets/foods/dumplings-wonton.jpg",
+    "sourceNote": "Google result -> Wikimedia Commons pan-fried dumplings"
+  },
+  "spicy-rice-noodles": {
+    "query": "螺蛳粉.jpg",
+    "title": "File:螺蛳粉.jpg",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:%E8%9E%BA%E8%9B%B3%E7%B2%89.jpg",
+    "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/%E8%9E%BA%E8%9B%B3%E7%B2%89.jpg/1280px-%E8%9E%BA%E8%9B%B3%E7%B2%89.jpg",
+    "file": "assets/foods/spicy-rice-noodles.jpg",
+    "sourceNote": "Google result -> Wikimedia Commons category Luosifen"
+  },
+  "korean-bibimbap": {
+    "query": "bibimbap",
+    "title": "File:Korea-Jeonju-Bibimbap festival-01.jpg",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Korea-Jeonju-Bibimbap_festival-01.jpg",
+    "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Korea-Jeonju-Bibimbap_festival-01.jpg/960px-Korea-Jeonju-Bibimbap_festival-01.jpg",
+    "file": "assets/foods/korean-bibimbap.jpg"
+  },
+  "fresh-salad-bowl": {
+    "query": "salad bowl",
+    "title": "File:Organic Salad Bowl (44474092361).jpg",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Organic_Salad_Bowl_(44474092361).jpg",
+    "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Organic_Salad_Bowl_%2844474092361%29.jpg/960px-Organic_Salad_Bowl_%2844474092361%29.jpg",
+    "file": "assets/foods/fresh-salad-bowl.jpg"
+  },
+  "yakitori-skewers": {
+    "query": "yakitori skewers",
+    "title": "File:YakitoriM0826.jpg",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:YakitoriM0826.jpg",
+    "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/YakitoriM0826.jpg/960px-YakitoriM0826.jpg",
+    "file": "assets/foods/yakitori-skewers.jpg"
+  },
+  "sichuan-fish-soup": {
+    "query": "水煮鱼 Spicy Fish with Rice - Spicy Fish, Glen Waverley (3012467062).jpg",
+    "title": "File:水煮鱼 Spicy Fish with Rice - Spicy Fish, Glen Waverley (3012467062).jpg",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:%E6%B0%B4%E7%85%AE%E9%B1%BC_Spicy_Fish_with_Rice_-_Spicy_Fish,_Glen_Waverley_(3012467062).jpg",
+    "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/%E6%B0%B4%E7%85%AE%E9%B1%BC_Spicy_Fish_with_Rice_-_Spicy_Fish%2C_Glen_Waverley_%283012467062%29.jpg/1280px-%E6%B0%B4%E7%85%AE%E9%B1%BC_Spicy_Fish_with_Rice_-_Spicy_Fish%2C_Glen_Waverley_%283012467062%29.jpg",
+    "file": "assets/foods/sichuan-fish-soup.jpg",
+    "sourceNote": "Google result -> Wikimedia Commons category Shui zhu yu"
+  },
+  "hong-kong-cafe-food": {
+    "query": "hong kong cafe food",
+    "title": "File:HK Sai Ying Pun 香港商業中心 Hong Kong Plaza mall Cafe de Carol restaurant food barbecue bbq meat pork duck Jan-2016 DSC.JPG",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:HK_Sai_Ying_Pun_%E9%A6%99%E6%B8%AF%E5%95%86%E6%A5%AD%E4%B8%AD%E5%BF%83_Hong_Kong_Plaza_mall_Cafe_de_Carol_restaurant_food_barbecue_bbq_meat_pork_duck_Jan-2016_DSC.JPG",
+    "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/HK_Sai_Ying_Pun_%E9%A6%99%E6%B8%AF%E5%95%86%E6%A5%AD%E4%B8%AD%E5%BF%83_Hong_Kong_Plaza_mall_Cafe_de_Carol_restaurant_food_barbecue_bbq_meat_pork_duck_Jan-2016_DSC.JPG/960px-HK_Sai_Ying_Pun_%E9%A6%99%E6%B8%AF%E5%95%86%E6%A5%AD%E4%B8%AD%E5%BF%83_Hong_Kong_Plaza_mall_Cafe_de_Carol_restaurant_food_barbecue_bbq_meat_pork_duck_Jan-2016_DSC.JPG",
+    "file": "assets/foods/hong-kong-cafe-food.jpg"
+  },
+  "pan-fried-dumplings": {
+    "query": "pan fried dumplings",
+    "title": "File:Pan Fried Moms.JPG",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Pan_Fried_Moms.JPG",
+    "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Pan_Fried_Moms.JPG/960px-Pan_Fried_Moms.JPG",
+    "file": "assets/foods/pan-fried-dumplings.jpg"
+  },
+  "ramen-bowl": {
+    "query": "Tonkotsu ramen.jpg",
+    "title": "File:Tonkotsu ramen.jpg",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Tonkotsu_ramen.jpg",
+    "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Tonkotsu_ramen.jpg/1280px-Tonkotsu_ramen.jpg",
+    "file": "assets/foods/ramen-bowl.jpg",
+    "sourceNote": "Google result -> Wikimedia Commons ramen file"
+  },
+  "rice-noodle-soup": {
+    "query": "rice noodle soup",
+    "title": "File:Bean vermicelli noodle soup at Din Tai Fung by misocrazy.jpg",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Bean_vermicelli_noodle_soup_at_Din_Tai_Fung_by_misocrazy.jpg",
+    "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Bean_vermicelli_noodle_soup_at_Din_Tai_Fung_by_misocrazy.jpg/960px-Bean_vermicelli_noodle_soup_at_Din_Tai_Fung_by_misocrazy.jpg",
+    "file": "assets/foods/rice-noodle-soup.jpg"
+  },
+  "crayfish-dish": {
+    "query": "crayfish dish",
+    "title": "File:Crawfish dinner food.jpg",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Crawfish_dinner_food.jpg",
+    "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Crawfish_dinner_food.jpg/960px-Crawfish_dinner_food.jpg",
+    "file": "assets/foods/crayfish-dish.jpg"
+  },
+  "hainanese-chicken-rice": {
+    "query": "hainanese chicken rice",
+    "title": "File:Tian Tian Hainanese Chicken Rice, Singapore.JPG",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Tian_Tian_Hainanese_Chicken_Rice,_Singapore.JPG",
+    "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/8/8a/Tian_Tian_Hainanese_Chicken_Rice%2C_Singapore.JPG",
+    "file": "assets/foods/hainanese-chicken-rice.jpg"
+  },
+  "korean-army-stew": {
+    "query": "budae jjigae",
+    "title": "File:Korean.food-Budaejjigae-01.jpg",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Korean.food-Budaejjigae-01.jpg",
+    "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/0/04/Korean.food-Budaejjigae-01.jpg",
+    "file": "assets/foods/korean-army-stew.jpg"
+  },
+  "burrito-wrap": {
+    "query": "Grilled Chicken Burrito (7842256236).jpg",
+    "title": "File:Grilled Chicken Burrito (7842256236).jpg",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Grilled_Chicken_Burrito_(7842256236).jpg",
+    "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Grilled_Chicken_Burrito_%287842256236%29.jpg/1280px-Grilled_Chicken_Burrito_%287842256236%29.jpg",
+    "file": "assets/foods/burrito-wrap.jpg",
+    "sourceNote": "Google result -> Wikimedia Commons burrito file"
+  },
+  "croissant-coffee": {
+    "query": "croissant coffee",
+    "title": "File:Almond croissant - Coffee Club 2025-03-12.jpg",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Almond_croissant_-_Coffee_Club_2025-03-12.jpg",
+    "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Almond_croissant_-_Coffee_Club_2025-03-12.jpg/960px-Almond_croissant_-_Coffee_Club_2025-03-12.jpg",
+    "file": "assets/foods/croissant-coffee.jpg"
+  },
+  "lamb-skewers": {
+    "query": "lamb skewers",
+    "title": "File:Lamb skewers, Iris, 183 Rue Saint-Martin, Paris 001.jpg",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Lamb_skewers,_Iris,_183_Rue_Saint-Martin,_Paris_001.jpg",
+    "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Lamb_skewers%2C_Iris%2C_183_Rue_Saint-Martin%2C_Paris_001.jpg/960px-Lamb_skewers%2C_Iris%2C_183_Rue_Saint-Martin%2C_Paris_001.jpg",
+    "file": "assets/foods/lamb-skewers.jpg"
+  },
+  "seafood-pasta": {
+    "query": "seafood pasta",
+    "title": "File:Scallops seafood pasta food dinner.jpg",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Scallops_seafood_pasta_food_dinner.jpg",
+    "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Scallops_seafood_pasta_food_dinner.jpg/960px-Scallops_seafood_pasta_food_dinner.jpg",
+    "file": "assets/foods/seafood-pasta.jpg"
+  },
+  "dim-sum-table": {
+    "query": "dim sum",
+    "title": "File:Fast food dim sum and soy sauce.jpg",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Fast_food_dim_sum_and_soy_sauce.jpg",
+    "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Fast_food_dim_sum_and_soy_sauce.jpg/960px-Fast_food_dim_sum_and_soy_sauce.jpg",
+    "file": "assets/foods/dim-sum-table.jpg"
+  },
+  "cheese-baked-rice": {
+    "query": "baked rice cheese",
+    "title": "File:Steak on fried rice baked with cheese and garlic sauce - Kings Cafe (2498975592).jpg",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Steak_on_fried_rice_baked_with_cheese_and_garlic_sauce_-_Kings_Cafe_(2498975592).jpg",
+    "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Steak_on_fried_rice_baked_with_cheese_and_garlic_sauce_-_Kings_Cafe_%282498975592%29.jpg/960px-Steak_on_fried_rice_baked_with_cheese_and_garlic_sauce_-_Kings_Cafe_%282498975592%29.jpg",
+    "file": "assets/foods/cheese-baked-rice.jpg"
+  },
+  "street-food-noodles": {
+    "query": "street food noodles",
+    "title": "File:Grilled cold noodles 1.jpg",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Grilled_cold_noodles_1.jpg",
+    "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/1/14/Grilled_cold_noodles_1.jpg",
+    "file": "assets/foods/street-food-noodles.jpg"
+  },
+  "spicy-chicken-dish": {
+    "query": "Spicy chicken (La-zi-ji).jpg",
+    "title": "File:Spicy chicken (La-zi-ji).jpg",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Spicy_chicken_(La-zi-ji).jpg",
+    "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Spicy_chicken_%28La-zi-ji%29.jpg/1280px-Spicy_chicken_%28La-zi-ji%29.jpg",
+    "file": "assets/foods/spicy-chicken-dish.jpg",
+    "sourceNote": "Google result -> Wikimedia Commons spicy chicken file"
+  },
+  "omurice": {
+    "query": "omurice",
+    "title": "File:Omurice restaurant by Shadi Hijazi in Kobe.jpg",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Omurice_restaurant_by_Shadi_Hijazi_in_Kobe.jpg",
+    "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Omurice_restaurant_by_Shadi_Hijazi_in_Kobe.jpg/960px-Omurice_restaurant_by_Shadi_Hijazi_in_Kobe.jpg",
+    "file": "assets/foods/omurice.jpg"
+  },
+  "korean-bbq": {
+    "query": "korean barbecue",
+    "title": "File:Korean barbecue with seafood-02.jpg",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Korean_barbecue_with_seafood-02.jpg",
+    "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Korean_barbecue_with_seafood-02.jpg/960px-Korean_barbecue_with_seafood-02.jpg",
+    "file": "assets/foods/korean-bbq.jpg"
+  },
+  "peking-duck-wrap": {
+    "query": "Peking duck wrap.jpg",
+    "title": "File:Peking duck wrap.jpg",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Peking_duck_wrap.jpg",
+    "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/c/c1/Peking_duck_wrap.jpg",
+    "file": "assets/foods/peking-duck-wrap.jpg",
+    "sourceNote": "Google result -> Wikimedia Commons Peking duck wrap file"
+  },
+  "tomato-beef-rice": {
+    "query": "Beef Stew with Rice with peanut butter.jpg",
+    "title": "File:Beef Stew with Rice with peanut butter.jpg",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Beef_Stew_with_Rice_with_peanut_butter.jpg",
+    "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Beef_Stew_with_Rice_with_peanut_butter.jpg/1280px-Beef_Stew_with_Rice_with_peanut_butter.jpg",
+    "file": "assets/foods/tomato-beef-rice.jpg",
+    "sourceNote": "Google result -> Wikimedia Commons beef stew with rice file"
+  },
+  "spicy-hot-pot": {
+    "query": "Ma La Tang Malatang Chinese hot soup noodle Shinjuku Tokyo 麻辣烫.jpg",
+    "title": "File:Ma La Tang Malatang Chinese hot soup noodle Shinjuku Tokyo 麻辣烫.jpg",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Ma_La_Tang_Malatang_Chinese_hot_soup_noodle_Shinjuku_Tokyo_%E9%BA%BB%E8%BE%A3%E7%83%AB.jpg",
+    "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Ma_La_Tang_Malatang_Chinese_hot_soup_noodle_Shinjuku_Tokyo_%E9%BA%BB%E8%BE%A3%E7%83%AB.jpg/1280px-Ma_La_Tang_Malatang_Chinese_hot_soup_noodle_Shinjuku_Tokyo_%E9%BA%BB%E8%BE%A3%E7%83%AB.jpg",
+    "sourceNote": "Google result -> Wikimedia Commons category Malatang",
+    "file": "assets/foods/spicy-hot-pot.jpg"
+  },
+  "grilled-fish-dish": {
+    "query": "140531 Forellen auf dem Grill.jpg",
+    "title": "File:140531 Forellen auf dem Grill.jpg",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:140531_Forellen_auf_dem_Grill.jpg",
+    "sourceUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/140531_Forellen_auf_dem_Grill.jpg/1280px-140531_Forellen_auf_dem_Grill.jpg",
+    "sourceNote": "Google result -> Wikimedia Commons featured grilled fish file",
+    "file": "assets/foods/grilled-fish-dish.jpg"
+  }
+}

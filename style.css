@@ -9,7 +9,7 @@
   --green: #2c8a63;
   --blue: #3178b5;
   --purple: #7c5cc4;
-  --tile: 104px;
+  --tile: clamp(82px, calc((100vw - 700px) / 7), 104px);
   --gap: 10px;
   --radius: 8px;
   --shadow: 0 26px 70px rgba(79, 49, 22, 0.2);
@@ -25,7 +25,7 @@ body {
   color: var(--ink);
   font-family: "PingFang SC", "Microsoft YaHei", Inter, system-ui, sans-serif;
   background:
-    linear-gradient(135deg, rgba(255, 247, 224, 0.74), rgba(234, 252, 255, 0.68)),
+    linear-gradient(135deg, rgba(255, 247, 224, 0.42), rgba(234, 252, 255, 0.36)),
     url("./assets/backgrounds/food-island.png") center/cover fixed;
 }
 
@@ -54,7 +54,7 @@ button {
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(255, 250, 240, 0.88)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.48), rgba(255, 250, 240, 0.62)),
     url("./assets/backgrounds/food-island.png") center/cover;
   box-shadow: var(--shadow);
 }
@@ -63,8 +63,8 @@ button {
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(255, 250, 240, 0.68);
-  backdrop-filter: blur(3px) saturate(0.92);
+  background: rgba(255, 250, 240, 0.38);
+  backdrop-filter: blur(1.5px) saturate(1);
 }
 
 .brand {
@@ -93,8 +93,10 @@ button {
 .board-wrap {
   position: relative;
   z-index: 2;
-  width: calc(var(--tile) * 7 + var(--gap) * 6);
-  height: calc(var(--tile) * 7 + var(--gap) * 6);
+  --board-size: calc(var(--tile) * 7 + var(--gap) * 6);
+  --dice-lane: 126px;
+  width: calc(var(--board-size) + var(--dice-lane));
+  height: var(--board-size);
   margin: 20px auto 32px;
 }
 
@@ -103,8 +105,8 @@ button {
   grid-template-columns: repeat(7, var(--tile));
   grid-template-rows: repeat(7, var(--tile));
   gap: var(--gap);
-  width: 100%;
-  height: 100%;
+  width: var(--board-size);
+  height: var(--board-size);
 }
 
 .tile {
@@ -347,8 +349,8 @@ button {
 
 .board-dice {
   position: absolute;
-  left: 79%;
-  top: 22%;
+  right: calc((var(--dice-lane) - 104px) / 2);
+  top: 50%;
   z-index: 5;
   display: grid;
   place-items: center;
@@ -357,7 +359,7 @@ button {
   padding: 0;
   border: 0;
   background: transparent;
-  transform: translate(-50%, -50%) rotate(-7deg);
+  transform: translateY(-50%) rotate(-7deg);
   transition: transform 0.18s ease;
   transform-origin: center;
   perspective: 620px;
@@ -606,7 +608,7 @@ button {
 }
 
 .board-dice:hover {
-  transform: translate(-50%, -50%) rotate(5deg) scale(1.05);
+  transform: translateY(-50%) rotate(5deg) scale(1.05);
 }
 
 .board-dice.rolling {
@@ -626,25 +628,25 @@ button {
 
 @keyframes board-dice-throw {
   0% {
-    transform: translate(-50%, -50%) rotate(-12deg) scale(0.96);
+    transform: translateY(-50%) translateX(0) rotate(-12deg) scale(0.96);
   }
   18% {
-    transform: translate(-126%, -106%) rotate(-20deg) scale(1.04);
+    transform: translateY(calc(-50% - 56px)) translateX(-42px) rotate(-20deg) scale(1.04);
   }
   40% {
-    transform: translate(42%, -166%) rotate(16deg) scale(1.09);
+    transform: translateY(calc(-50% - 94px)) translateX(22px) rotate(16deg) scale(1.09);
   }
   64% {
-    transform: translate(-72%, -28%) rotate(-10deg) scale(0.92, 1.05);
+    transform: translateY(calc(-50% + 18px)) translateX(-28px) rotate(-10deg) scale(0.92, 1.05);
   }
   74% {
-    transform: translate(-62%, -18%) rotate(-6deg) scale(1.12, 0.86);
+    transform: translateY(calc(-50% + 26px)) translateX(-18px) rotate(-6deg) scale(1.12, 0.86);
   }
   86% {
-    transform: translate(-28%, -58%) rotate(7deg) scale(1.03);
+    transform: translateY(calc(-50% - 18px)) translateX(10px) rotate(7deg) scale(1.03);
   }
   100% {
-    transform: translate(-50%, -50%) rotate(-7deg) scale(1);
+    transform: translateY(-50%) translateX(0) rotate(-7deg) scale(1);
   }
 }
 
@@ -1652,6 +1654,7 @@ button {
   }
 
   .board-wrap {
+    --dice-lane: 84px;
     margin: 12px auto 16px;
   }
 
@@ -1757,8 +1760,9 @@ button {
   .board-dice {
     width: 76px;
     height: 76px;
-    left: 50%;
-    top: 52%;
+    right: 4px;
+    top: 50%;
+    left: auto;
     --dice-size: 54px;
     --dice-half: 27px;
   }
@@ -1879,7 +1883,7 @@ button {
 
 @media (max-width: 390px) {
   :root {
-    --tile: calc((100vw - 46px) / 7);
+    --tile: calc((100vw - 114px) / 7);
     --gap: 3px;
   }
 
@@ -1905,6 +1909,7 @@ button {
   .board-dice {
     width: 68px;
     height: 68px;
+    right: 6px;
     --dice-size: 48px;
     --dice-half: 24px;
   }

@@ -34,15 +34,15 @@ const state = {
 const characters = {
   corgi: {
     name: "胖柯基",
-    idle: "胖柯基正在乖乖坐着等开饭",
-    walking: "胖柯基短腿加速中，耳朵已经飞起来了",
-    landed: "胖柯基确认落点，尾巴开始疯狂营业",
+    idle: "胖柯基端坐如小面包：饭呢？朕的饭呢？",
+    walking: "胖柯基短腿启动！地板都被踩出奶油花边了",
+    landed: "胖柯基宣布开饭！尾巴已经摇成电风扇三档",
   },
   bluecat: {
     name: "蓝猫",
-    idle: "蓝猫假装冷静，其实已经盯着饭碗",
-    walking: "蓝猫优雅巡逻中，步伐里带着一点小骄傲",
-    landed: "蓝猫点头批准：这口可以吃",
+    idle: "蓝猫表面高冷，内心已经把菜单啃出毛边",
+    walking: "蓝猫巡逻中，步伐优雅得像刚继承了猫粮王国",
+    landed: "蓝猫批准本格：开吃！不许反驳本喵行政命令",
   },
 };
 
@@ -54,50 +54,50 @@ const pathCells = [
 ];
 
 const foods = [
-  { name: "草莓", kind: "sweet", tag: "酸甜", icon: "strawberry", vibe: "红红一颗，像今天的小好运先亮了灯。" },
-  { name: "橙子", kind: "light", tag: "清爽", icon: "orange", vibe: "一口清亮，适合把脑袋里的雾擦干净。" },
-  { name: "冰激凌", kind: "sweet", tag: "降温", icon: "ice-cream", vibe: "不是正餐，但快乐有时候需要先上桌。" },
-  { name: "蔓越莓", kind: "sweet", tag: "元气", icon: "cranberry", vibe: "酸甜小颗粒，专门负责把心情调亮一点。" },
-  { name: "开心果", kind: "fun", tag: "开口笑", icon: "pistachio", vibe: "名字都这么会营业，今天值得笑一下。" },
-  { name: "梨", kind: "light", tag: "润润", icon: "pear", vibe: "清清甜甜，适合给今天降一点火气。" },
-  { name: "汉堡", kind: "fun", tag: "快乐", icon: "burger", vibe: "上下都夹好了，连犹豫也一起夹住。" },
-  { name: "芒果", kind: "sweet", tag: "香甜", icon: "mango", vibe: "甜得很有阳光感，像把下午提前过好。" },
-  { name: "牛油果", kind: "light", tag: "绵密", icon: "avocado", vibe: "软软稳稳，适合走一个不费劲的精致路线。" },
-  { name: "核桃", kind: "warm", tag: "补脑", icon: "walnut", vibe: "适合给脑子加点燃料，然后继续假装很聪明。" },
-  { name: "牛奶", kind: "light", tag: "温柔", icon: "milk", vibe: "今天如果有点吵，就用一杯温柔收尾。" },
-  { name: "松子", kind: "warm", tag: "小香", icon: "pine-nut", vibe: "小小一颗，但香气很会给饭运撑场面。" },
-  { name: "披萨", kind: "fun", tag: "分享", icon: "pizza", vibe: "适合把烦恼切成几块，一块一块解决。" },
-  { name: "夏威夷果", kind: "warm", tag: "脆香", icon: "macadamia", vibe: "圆滚滚的满足感，今天就该吃点可爱的。" },
-  { name: "甜甜圈", kind: "sweet", tag: "圆满", icon: "donut", vibe: "一个圈圈，帮今天把快乐闭环。" },
-  { name: "吐司", kind: "warm", tag: "松软", icon: "toast", vibe: "朴素但可靠，像早晨给你留的一盏灯。" },
-  { name: "榛子", kind: "warm", tag: "坚果香", icon: "hazelnut", vibe: "香气低调但很稳，适合一点点补满能量。" },
-  { name: "腰果", kind: "fun", tag: "弯弯", icon: "cashew", vibe: "弯得很有态度，今天允许路线不那么直。" },
-  { name: "杏仁", kind: "light", tag: "清香", icon: "almond", vibe: "轻轻脆脆，像给今天加一个利落的标点。" },
-  { name: "奇异果", kind: "sweet", tag: "醒神", icon: "kiwi", vibe: "酸甜里带点俏皮，很适合打破饭点沉默。" },
+  { name: "草莓", kind: "sweet", tag: "酸甜", icon: "strawberry", vibe: "红到像偷偷练过魔法，咬一口嘴角自动上扬，烦恼当场原地辞职。" },
+  { name: "橙子", kind: "light", tag: "清爽", icon: "orange", vibe: "剥开就是一颗小太阳，汁水啪叽爆开，整个人像被快乐 Wi-Fi 连上了。" },
+  { name: "冰激凌", kind: "sweet", tag: "降温", icon: "ice-cream", vibe: "冰冰凉凉从舌尖滑进灵魂，热气退散，脑袋里开始播放度假广告。" },
+  { name: "蔓越莓", kind: "sweet", tag: "元气", icon: "cranberry", vibe: "小小一颗酸甜炸弹，咻一下把疲惫炸成彩带，心情开始扭秧歌。" },
+  { name: "开心果", kind: "fun", tag: "开口笑", icon: "pistachio", vibe: "它都笑裂开了，你还绷什么？吃它，嘴角直接被快乐遥控器按上去。" },
+  { name: "梨", kind: "light", tag: "润润", icon: "pear", vibe: "水润得像给喉咙装了小喷泉，一口下去，火气被温柔叉出去罚站。" },
+  { name: "汉堡", kind: "fun", tag: "快乐", icon: "burger", vibe: "上下两片面包夹住宇宙秩序，中间那口肉香负责把理智按进快乐沙发。" },
+  { name: "芒果", kind: "sweet", tag: "香甜", icon: "mango", vibe: "香到像夏天本人递来小纸条：别装了，你今天就该甜得离谱。" },
+  { name: "牛油果", kind: "light", tag: "绵密", icon: "avocado", vibe: "绵密到像给胃盖小被子，精致感啪一下上线，连筷子都开始端庄。" },
+  { name: "核桃", kind: "warm", tag: "补脑", icon: "walnut", vibe: "长得像脑子不是没有原因，吃完智商不一定涨，但气势必须像刚考上饭院士。" },
+  { name: "牛奶", kind: "light", tag: "温柔", icon: "milk", vibe: "温温柔柔一口下去，胃里开小夜灯，今天的尖叫被折成小毛巾。" },
+  { name: "松子", kind: "warm", tag: "小香", icon: "pine-nut", vibe: "小小一粒香得很嚣张，像饭桌上的隐藏刺客，轻轻一咬就偷走你的注意力。" },
+  { name: "披萨", kind: "fun", tag: "分享", icon: "pizza", vibe: "圆形快乐被切成几瓣，每一瓣都在喊：别讲道理，先拉丝！" },
+  { name: "夏威夷果", kind: "warm", tag: "脆香", icon: "macadamia", vibe: "圆滚滚出场，咔嚓一声，香气像小礼炮，直接把无聊轰出饭局。" },
+  { name: "甜甜圈", kind: "sweet", tag: "圆满", icon: "donut", vibe: "中间有洞但快乐没漏，糖霜一亮相，今日 KPI 改名叫可爱达标。" },
+  { name: "吐司", kind: "warm", tag: "松软", icon: "toast", vibe: "松软得像云朵兼职打工，一口咬下去，人生边角料都变成金黄脆脆。" },
+  { name: "榛子", kind: "warm", tag: "坚果香", icon: "hazelnut", vibe: "香得很低调，但一出手就是坚果界老戏骨，嘎嘣一下气场坐稳。" },
+  { name: "腰果", kind: "fun", tag: "弯弯", icon: "cashew", vibe: "弯成这样还这么香，说明人生不必直线前进，拐一下可能更好吃。" },
+  { name: "杏仁", kind: "light", tag: "清香", icon: "almond", vibe: "清清脆脆像给嘴巴敲木鱼，烦躁当场被敲到放下执念。" },
+  { name: "奇异果", kind: "sweet", tag: "醒神", icon: "kiwi", vibe: "毛茸茸登场，自带 BGM。酸到眉毛打结，甜到怀疑人生，咬一口天灵盖打开，食欲开始跳科目三。" },
 ];
 
 const fortunes = [
-  { name: "锅气上上签", boost: "热乎", shift: 2, line: "今天适合吃会冒热气的东西，运气也跟着往上飘。" },
-  { name: "清爽转运签", boost: "清淡", shift: 1, line: "今天不宜太硬扛，清爽一点反而更容易赢。" },
-  { name: "辣味破局签", boost: "辣", shift: 3, line: "有点堵的日子，适合用辣味把局面打开。" },
-  { name: "快乐加餐签", boost: "快乐", shift: 4, line: "今天的正事已经够正了，吃饭可以荒唐一点。" },
-  { name: "稳稳落袋签", boost: "踏实", shift: 0, line: "别追奇招，吃一个踏实的，胃会给你好评。" },
+  { name: "锅气上上签", boost: "热乎", shift: 2, line: "锅气上头，灶王爷把围裙一甩：加步！今天不吃热闹的都算辜负宇宙。" },
+  { name: "清爽转运签", boost: "清淡", shift: 1, line: "清爽星发来急电：别硬撑，来点轻的，脑袋立刻从浆糊升级成果冻。" },
+  { name: "辣味破局签", boost: "辣", shift: 3, line: "辣味开路，犹豫退退退！今天嘴巴不冒点火花，食欲委员会不同意。" },
+  { name: "快乐加餐签", boost: "快乐", shift: 4, line: "快乐部长拍桌：加餐！正经生活先靠边，今天由馋嘴临时接管大脑。" },
+  { name: "稳稳落袋签", boost: "踏实", shift: 0, line: "稳稳签一落，胃部董事会全票通过：别整花活，吃它就像给灵魂盖章。" },
 ];
 
 const mystics = [
-  "筷子方向指向东南，主打一个先吃再说",
-  "今日锅铲指数 87%，适合有香气的决定",
-  "米饭星进入食欲宫，碳水发言权上升",
-  "辣椒守护神上线，犹豫会被自动翻炒",
-  "汤勺发出微弱信号：需要一点热乎的安慰",
-  "甜口能量偏高，允许饭后追加一点快乐",
+  "筷子指向东南，说明嘴巴已经替大脑偷偷报名",
+  "今日锅铲指数 87%，再不吃点香的，锅铲要出来主持公道",
+  "米饭星冲进食欲宫，碳水发言权突然变得很大声",
+  "辣椒守护神已上线，犹豫会被自动翻炒三十秒",
+  "汤勺发出神秘滴滴声：需要一点热乎的精神搓澡",
+  "甜口能量爆表，允许快乐超标，允许嘴角离家出走",
 ];
 
 const fallbackWeather = [
-  { text: "多云，适合出门觅食", mood: "mild" },
-  { text: "小雨，适合热汤护体", mood: "rain" },
-  { text: "有点热，清爽选项加分", mood: "hot" },
-  { text: "微凉，锅气正在召唤", mood: "cool" },
+  { text: "多云，天空在假装自己是棉花糖", mood: "mild" },
+  { text: "小雨，路面在给饭局铺氛围感", mood: "rain" },
+  { text: "有点热，太阳像开了外放", mood: "hot" },
+  { text: "微凉，锅气正在门口疯狂招手", mood: "cool" },
 ];
 
 function init() {
@@ -126,9 +126,9 @@ function init() {
     state.position = 0;
     setDiceFace(dice, null);
     setDiceFace(boardDice, null);
-    stepText.textContent = "棋盘已洗牌";
-    resultTitle.textContent = "新棋盘到位";
-    resultText.textContent = "这一局的美食顺序已经重新打乱，命运假装很公平。";
+    stepText.textContent = "棋盘已重开";
+    resultTitle.textContent = "新棋盘闪亮登场";
+    resultText.textContent = "美食顺序已被命运抓起来摇匀。上一局作废，饭运重新投胎，准备开癫！";
     moveLog.innerHTML = "";
     updateCenterStage(getCurrentFood(), "idle");
     positionMascot(false);
@@ -261,7 +261,7 @@ function getStartRewardFood(roll) {
     kind: "fun",
     tag: "再开饭",
     icon: fallback.icon,
-    vibe: "你绕回了起点，说明饭运正在重启。今天适合加一份小吃，或者把刚刚最心动的那格直接收入菜单。",
+    vibe: "你竟然绕回起点，说明饭运系统重启成功。奖励一份补给，嘴巴原地复活，胃部开始放烟花。",
   };
 }
 
@@ -617,19 +617,72 @@ function getFoodIcon(food) {
 function buildReason(food, roll, fortuneSteps) {
   const weatherLine = getWeatherReason(food);
   const mysticLine = getMysticReason(food, roll);
-  return `${weatherLine}${state.fortune.line}${mysticLine}所以这格推荐 ${food.name}：${food.vibe}`;
+  const command = getEatCommand(food);
+  return `${weatherLine}这时候——${food.name}！闪亮登场，自带饭点 BGM！${state.fortune.line}${mysticLine}${food.name}：${food.vibe}${command}`;
 }
 
 function getWeatherReason(food) {
-  if (state.weather.mood === "rain" && food.kind === "warm") return `外面带点湿气，${food.name}这种热乎选项直接加命中。`;
-  if (state.weather.mood === "hot" && (food.kind === "light" || food.kind === "sweet")) return `天气偏热，${food.name}这种清爽路线很会救场。`;
-  if (state.weather.mood === "cool" && (food.kind === "warm" || food.kind === "spicy")) return `微凉天气和${food.name}很合拍，锅气值正在升高。`;
-  return `${state.weather.text}，饭运没有阻拦你走向${food.name}。`;
+  if (state.weather.mood === "rain" && food.kind === "warm") return `外面湿到空气都想裹浴巾，${food.name}这种热乎选手一上桌，胃当场鼓掌。`;
+  if (state.weather.mood === "hot" && (food.kind === "light" || food.kind === "sweet")) return `天热到太阳都想请病假，${food.name}这种清爽路线直接把热气按进回收站。`;
+  if (state.weather.mood === "cool" && food.kind === "warm") return `微凉得像风在偷偷叹气，${food.name}一出现，锅气开始咚咚敲门。`;
+  if (state.weather.mood === "hot") return `天气热得离谱，路边石头都想点冰饮，但饭运偏偏把${food.name}举到你面前。`;
+  if (state.weather.mood === "rain") return `雨天自带懒人滤镜，世界湿漉漉，${food.name}负责把嘴巴哄到开机。`;
+  if (state.weather.mood === "cool") return `微凉天气像一只冷手拍你肩膀：别愣着，${food.name}已经在饭运门口排队。`;
+  return `${state.weather.text}，气氛已经铺好，${food.name}正在后台疯狂热身。`;
 }
 
 function getMysticReason(food, roll) {
   const luckyNumber = ((new Date().getDate() + roll + food.name.length) % 9) + 1;
-  return `玄学显示今日幸运数是 ${luckyNumber}，而这格的「${food.tag}」气场刚好接住你的食欲。`;
+  const weirdProofs = [
+    "因为它刚才在宇宙角落疯狂闪光",
+    "因为电饭煲听了都点头",
+    "因为筷子已经悄悄摆成胜利手势",
+    "因为胃部雷达哔哔乱叫",
+    "因为菜单之神把小票甩你脸上",
+    "因为你的食欲正在原地转圈圈",
+    "因为今日嘴巴 KPI 需要它救命",
+    "因为饭点结界已经打开",
+    "因为空气里出现了可疑香味",
+  ];
+  const proof = weirdProofs[(luckyNumber + roll + food.tag.length) % weirdProofs.length];
+  return `幸运数字 ${luckyNumber}，${proof}。这一格「${food.tag}」气场爆表，直接把无聊踢出群聊。`;
+}
+
+function getEatCommand(food) {
+  const commands = [
+    `吃它！立刻！${getFoodEmoji(food)}💥`,
+    `别问，问就是它！冲！${getFoodEmoji(food)}✨`,
+    `批准入口！现在、马上、安排！${getFoodEmoji(food)}🔥`,
+    `嘴巴已盖章：今日就它！${getFoodEmoji(food)}🎉`,
+  ];
+  return commands[(food.name.length + new Date().getMinutes()) % commands.length];
+}
+
+function getFoodEmoji(food) {
+  const emojis = {
+    草莓: "🍓",
+    橙子: "🍊",
+    冰激凌: "🍦",
+    蔓越莓: "🍒",
+    开心果: "🥜",
+    梨: "🍐",
+    汉堡: "🍔",
+    芒果: "🥭",
+    牛油果: "🥑",
+    核桃: "🌰",
+    牛奶: "🥛",
+    松子: "🌰",
+    披萨: "🍕",
+    夏威夷果: "🌰",
+    甜甜圈: "🍩",
+    吐司: "🍞",
+    榛子: "🌰",
+    腰果: "🥜",
+    杏仁: "🌰",
+    奇异果: "🥝",
+    起点补给: "🍽️",
+  };
+  return emojis[food.name] || "🍽️";
 }
 
 function markActiveTile() {

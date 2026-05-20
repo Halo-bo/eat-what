@@ -1519,6 +1519,7 @@ button {
   margin: 10px 0 0;
   color: var(--muted);
   line-height: 1.7;
+  white-space: pre-line;
 }
 
 .signals {

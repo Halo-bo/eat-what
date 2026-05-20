@@ -615,14 +615,81 @@ function getFoodIcon(food) {
 }
 
 function buildReason(food, roll, fortuneSteps) {
-  const weatherLine = getWeatherReason(food);
-  const mysticLine = getMysticReason(food, roll);
-  const command = getEatCommand(food);
-  return `${weatherLine}这时候——${food.name}！闪亮登场，自带饭点 BGM！${state.fortune.line}${mysticLine}${food.name}：${food.vibe}${command}`;
+  const luckyNumber = getLuckyNumber(food, roll);
+  const context = {
+    food,
+    roll,
+    fortuneSteps,
+    luckyNumber,
+    emoji: getFoodEmoji(food),
+    weather: getWeatherSetup(food),
+    luckyTake: getLuckyTake(luckyNumber),
+    tagTake: getTagTake(food, luckyNumber, roll),
+    command: getEatCommand(food, luckyNumber),
+  };
+  const styles = [
+    buildDongbeiReason,
+    buildStandupReason,
+    buildRapReason,
+    buildFortuneRadioReason,
+    buildOverlordReason,
+    buildCustomerServiceReason,
+  ];
+  const styleIndex = (state.position + roll + food.name.length + new Date().getDate()) % styles.length;
+  return styles[styleIndex](context);
 }
 
-function getWeatherReason(food) {
-  if (state.weather.mood === "rain" && food.kind === "warm") return `外面湿到空气都想裹浴巾，${food.name}这种热乎选手一上桌，胃当场鼓掌。`;
+function buildDongbeiReason({ food, luckyNumber, luckyTake, tagTake, command }) {
+  return `哎妈呀，${getWeatherDialect()}整啥？整${food.name}！
+幸运数字 ${luckyNumber}，${luckyTake}。「${food.tag}」气场杠杠的，困意见了都得改签下一班。
+${food.name}这小玩意儿贼会来事儿，${food.vibe}
+${command}`;
+}
+
+function buildStandupReason({ food, luckyNumber, luckyTake, tagTake, command }) {
+  return `${getWeatherStandup()}这种状态你问我吃啥？${food.name}就很懂事，像一个知道你余额但不嘲笑你的朋友。
+幸运数字 ${luckyNumber}，${luckyTake}。今天这格「${food.tag}」不是标签，是食欲给你递的律师函。
+我咬第一口，脑子突然上线；第二口，开始理解人生；第三口，差点给冰箱道歉。
+${food.name}：${food.vibe}
+${command}`;
+}
+
+function buildRapReason({ food, luckyNumber, tagTake, command, emoji }) {
+  return `Yo——${getWeatherRap()}
+${food.name}在我手，${food.tag}有节奏
+咬一口 嘶哈哈 食欲直接开大招
+幸运数字 ${luckyNumber} ${luckyNumber} ${luckyNumber}，吃完状态 King King King
+${tagTake}
+${food.vibe}
+${command} ${emoji}`;
+}
+
+function buildFortuneRadioReason({ food, luckyNumber, luckyTake, tagTake, command }) {
+  return `【饭运电台插播】${state.weather.text}，当前频道出现强烈咀嚼信号。
+本台掐指一算，幸运数字 ${luckyNumber}，${luckyTake}。请注意，「${food.tag}」能量正在从棋盘右下角冒泡。
+${tagTake} 如果你此刻假装不饿，胃会立刻提交匿名举报。
+本期指定嘉宾：${food.name}。${food.vibe}
+${command}`;
+}
+
+function buildOverlordReason({ food, luckyNumber, tagTake, command }) {
+  return `饭桌霸总推门而入：今天，所有选择都给${food.name}让路。
+天气？只是背景板。运势？已经被${state.fortune.name}收购。幸运数字 ${luckyNumber} 一亮，全场筷子自动立正。
+「${food.tag}」气场开始接管会议室，${tagTake}
+${food.name}低声说：${food.vibe}
+${command}`;
+}
+
+function buildCustomerServiceReason({ food, luckyNumber, luckyTake, command }) {
+  return `您好，您排队的食欲已叫号，当前办理窗口：${food.name}。
+经系统检测，天气参数为「${state.weather.text}」，运势插件显示「${state.fortune.name}」，幸运数字 ${luckyNumber}，${luckyTake}。
+温馨提示：「${food.tag}」服务已自动为您开通，拒绝可能导致嘴巴发出抗议。
+本次推荐说明：${food.vibe}
+${command}`;
+}
+
+function getWeatherSetup(food) {
+  if (state.weather.mood === "rain" && food.kind === "warm") return `雨天把世界泡软了，${food.name}这种热乎选手一上桌，胃当场鼓掌。`;
   if (state.weather.mood === "hot" && (food.kind === "light" || food.kind === "sweet")) return `天热到太阳都想请病假，${food.name}这种清爽路线直接把热气按进回收站。`;
   if (state.weather.mood === "cool" && food.kind === "warm") return `微凉得像风在偷偷叹气，${food.name}一出现，锅气开始咚咚敲门。`;
   if (state.weather.mood === "hot") return `天气热得离谱，路边石头都想点冰饮，但饭运偏偏把${food.name}举到你面前。`;
@@ -631,31 +698,68 @@ function getWeatherReason(food) {
   return `${state.weather.text}，气氛已经铺好，${food.name}正在后台疯狂热身。`;
 }
 
-function getMysticReason(food, roll) {
-  const luckyNumber = ((new Date().getDate() + roll + food.name.length) % 9) + 1;
-  const weirdProofs = [
-    "因为它刚才在宇宙角落疯狂闪光",
-    "因为电饭煲听了都点头",
-    "因为筷子已经悄悄摆成胜利手势",
-    "因为胃部雷达哔哔乱叫",
-    "因为菜单之神把小票甩你脸上",
-    "因为你的食欲正在原地转圈圈",
-    "因为今日嘴巴 KPI 需要它救命",
-    "因为饭点结界已经打开",
-    "因为空气里出现了可疑香味",
-  ];
-  const proof = weirdProofs[(luckyNumber + roll + food.tag.length) % weirdProofs.length];
-  return `幸运数字 ${luckyNumber}，${proof}。这一格「${food.tag}」气场爆表，直接把无聊踢出群聊。`;
+function getWeatherDialect() {
+  if (state.weather.mood === "hot") return "这天儿热得离谱，影子都想请假。";
+  if (state.weather.mood === "rain") return "外头湿哒哒的，鞋底都开始讲感情。";
+  if (state.weather.mood === "cool") return "这小风一吹，肚子都开始打报告。";
+  return "这天气不整点好吃的，白瞎这张嘴了。";
 }
 
-function getEatCommand(food) {
+function getWeatherStandup() {
+  if (state.weather.mood === "hot") return "这天一热，人就容易做傻事。我刚才对着冰箱沉思三分钟，差点给冷冻层鞠躬。";
+  if (state.weather.mood === "rain") return "一下雨，人就容易深沉。我看着窗户发呆，感觉自己像一块没放盐的豆腐。";
+  if (state.weather.mood === "cool") return "这天气一凉，人就想找点安慰。我刚才摸了摸外套，外套说它也饿。";
+  return "今天这天气吧，不好不坏，像老板说的『简单聊两句』，最后聊了三小时。";
+}
+
+function getWeatherRap() {
+  if (state.weather.mood === "hot") return "天热到爆炸，嘴巴要降噪";
+  if (state.weather.mood === "rain") return "雨点哒哒哒，饭点别拖拉";
+  if (state.weather.mood === "cool") return "小风吹到脸，锅气要上线";
+  return "天气刚刚好，食欲别迟到";
+}
+
+function getLuckyNumber(food, roll) {
+  return ((new Date().getDate() + roll + food.name.length) % 9) + 1;
+}
+
+function getLuckyTake(luckyNumber) {
+  const takes = {
+    1: "1 是筷子站军姿，说明今天嘴巴纪律严明，只听好吃的指挥",
+    2: "2 像两只碗排队，左碗喊饿，右碗喊再来一口",
+    3: "3 像嘴角上扬两次半，快乐已经提前泄露",
+    4: "4 平平稳稳，适合把食欲安全护送到胃里",
+    5: "5 是饭点的中场哨，吹响之后谁还装不饿谁尴尬",
+    6: "6 站起来就是 9，说明今天的运气会自己翻面",
+    7: "7 像小勺子拐弯，专门把好吃的往你这边舀",
+    8: "8 是两个圆滚滚的饭碗抱在一起，富贵得很可疑",
+    9: "9 谐音久，吃一口能把快乐续到下个饭点",
+  };
+  return takes[luckyNumber];
+}
+
+function getTagTake(food, luckyNumber, roll) {
+  const takes = [
+    `这一格「${food.tag}」像开了挂，咻一下把困意踢到门外。`,
+    `「${food.tag}」气场不是一般强，是路过都要回头看菜单的程度。`,
+    `今天「${food.tag}」负责撑场面，连空气都变得有点想蘸酱。`,
+    `「${food.tag}」能量正在飙升，建议嘴巴立刻进入工作状态。`,
+    `这一口「${food.tag}」属于饭运指定动作，少吃一口都像错过彩蛋。`,
+    `「${food.tag}」已经在你脑门贴了便签：别犟，快吃。`,
+  ];
+  return takes[(luckyNumber + roll + food.name.length) % takes.length];
+}
+
+function getEatCommand(food, luckyNumber) {
   const commands = [
     `吃它！立刻！${getFoodEmoji(food)}💥`,
     `别问，问就是它！冲！${getFoodEmoji(food)}✨`,
     `批准入口！现在、马上、安排！${getFoodEmoji(food)}🔥`,
     `嘴巴已盖章：今日就它！${getFoodEmoji(food)}🎉`,
+    `整！必须整！${getFoodEmoji(food)}`,
+    `给它一个入口，给今天一个交代！${getFoodEmoji(food)}⚡`,
   ];
-  return commands[(food.name.length + new Date().getMinutes()) % commands.length];
+  return commands[(food.name.length + luckyNumber + new Date().getMinutes()) % commands.length];
 }
 
 function getFoodEmoji(food) {

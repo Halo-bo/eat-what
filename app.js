@@ -323,7 +323,7 @@ function createDiceRenderer(element) {
     setValue(value) {
       this.value = value;
       mark.hidden = Boolean(value);
-      drawDiceCanvas(canvas, context, getDiceAngles(value || 1));
+      drawDiceCanvas(canvas, context, getDiceAngles(value || 1), 1, { blank: !value });
     },
     roll(finalValue, duration) {
       window.cancelAnimationFrame(this.frame);
@@ -372,7 +372,7 @@ function getDiceAngles(value) {
   return angles[value] || angles[1];
 }
 
-function drawDiceCanvas(canvas, context, angles, progress = 1) {
+function drawDiceCanvas(canvas, context, angles, progress = 1, options = {}) {
   const rect = canvas.getBoundingClientRect();
   const size = Math.max(72, Math.round(rect.width || 120));
   const ratio = window.devicePixelRatio || 1;
@@ -406,7 +406,7 @@ function drawDiceCanvas(canvas, context, angles, progress = 1) {
 
   faces.forEach((face) => {
     if (face.normal.z <= -0.08) return;
-    drawDiceFace(context, face, center, scale, camera);
+    drawDiceFace(context, face, center, scale, camera, options);
   });
 }
 
@@ -430,7 +430,7 @@ function makeDiceFace(value, corners, normal) {
   };
 }
 
-function drawDiceFace(context, face, center, scale, camera) {
+function drawDiceFace(context, face, center, scale, camera, options = {}) {
   const points = face.corners.map((point) => projectPoint(point, center, scale, camera));
   const light = Math.max(0, face.normal.x * -0.28 + face.normal.y * -0.48 + face.normal.z * 0.86);
   const shade = Math.round(188 + light * 58);
@@ -461,7 +461,9 @@ function drawDiceFace(context, face, center, scale, camera) {
   context.stroke();
 
   drawFaceHighlight(context, points, scale);
-  drawPips(context, face.value, face.corners, center, scale, camera);
+  if (!options.blank) {
+    drawPips(context, face.value, face.corners, center, scale, camera);
+  }
   context.restore();
 }
 

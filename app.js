@@ -1,6 +1,5 @@
 const boardElement = document.querySelector("#board");
 const mascot = document.querySelector("#mascot");
-const dice = document.querySelector("#dice");
 const rollBtn = document.querySelector("#rollBtn");
 const shuffleBtn = document.querySelector("#shuffleBtn");
 const resultTitle = document.querySelector("#resultTitle");
@@ -110,7 +109,6 @@ function init() {
   weatherText.textContent = state.weather.text;
 
   shuffleBoard();
-  setDiceFace(dice, null);
   setDiceFace(boardDice, null);
   applyCharacter("corgi");
   updateCenterStage(getCurrentFood(), "idle");
@@ -124,7 +122,6 @@ function init() {
     if (state.rolling) return;
     shuffleBoard();
     state.position = 0;
-    setDiceFace(dice, null);
     setDiceFace(boardDice, null);
     stepText.textContent = "棋盘已重开";
     resultTitle.textContent = "新棋盘闪亮登场";
@@ -266,6 +263,7 @@ function getStartRewardFood(roll) {
 }
 
 function setDiceFace(element, value) {
+  if (!element) return;
   element.classList.toggle("unknown", !value);
   element.dataset.value = value || "";
   const renderer = getDiceRenderer(element);
@@ -273,20 +271,14 @@ function setDiceFace(element, value) {
 }
 
 async function tumbleDice(finalValue) {
-  dice.classList.remove("rolling");
   boardDice.classList.remove("rolling");
-  dice.offsetHeight;
   boardDice.offsetHeight;
-  getDiceRenderer(dice).roll(finalValue, 1320);
   getDiceRenderer(boardDice).roll(finalValue, 1320);
-  dice.classList.add("rolling");
   boardDice.classList.add("rolling");
 
   const duration = 1320;
   await wait(duration);
-  setDiceFace(dice, finalValue);
   setDiceFace(boardDice, finalValue);
-  dice.classList.remove("rolling");
   boardDice.classList.remove("rolling");
 }
 

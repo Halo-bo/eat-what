@@ -368,12 +368,11 @@ button {
 .dice-pad::before {
   content: "";
   position: absolute;
-  inset: 10px;
-  border: 1px dashed rgba(34, 28, 23, 0.16);
-  border-radius: 14px;
+  inset: 12px;
+  border-radius: 16px;
   background:
-    linear-gradient(90deg, transparent calc(50% - 0.5px), rgba(34, 28, 23, 0.08) 50%, transparent calc(50% + 0.5px)),
-    linear-gradient(180deg, transparent calc(50% - 0.5px), rgba(34, 28, 23, 0.08) 50%, transparent calc(50% + 0.5px));
+    radial-gradient(circle at 28% 22%, rgba(255, 255, 255, 0.55), transparent 34%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.22), rgba(255, 221, 166, 0.1));
   pointer-events: none;
 }
 

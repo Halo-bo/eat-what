@@ -315,44 +315,34 @@ function getDiceRenderer(element) {
 }
 
 function createDiceRenderer(element) {
-  element.innerHTML = `<canvas class="dice-canvas" aria-hidden="true"></canvas><span class="dice-mark">?</span>`;
+  element.innerHTML = `<canvas class="dice-canvas" aria-hidden="true"></canvas>`;
   const canvas = element.querySelector("canvas");
-  const mark = element.querySelector(".dice-mark");
   const context = canvas.getContext("2d");
   const renderer = {
     value: null,
     frame: null,
     setValue(value) {
       this.value = value;
-      mark.hidden = Boolean(value);
-      drawDiceCanvas(canvas, context, getDiceAngles(value || 1), 1, { blank: !value });
+      drawReferenceDice(canvas, context, { topValue: value || 1, question: !value, progress: 1 });
     },
     roll(finalValue, duration) {
       window.cancelAnimationFrame(this.frame);
-      mark.hidden = true;
       const start = performance.now();
       const animate = (now) => {
         const progress = Math.min(1, (now - start) / duration);
         const ease = 1 - Math.pow(1 - progress, 3);
-        const settle = progress > 0.76 ? (progress - 0.76) / 0.24 : 0;
-        const target = getDiceAngles(finalValue);
-        const spin = {
-          x: 0.7 + ease * Math.PI * 5.2,
-          y: -0.5 + ease * Math.PI * 6.4,
-          z: Math.sin(progress * Math.PI * 5) * 0.45,
-        };
-        const angles = {
-          x: lerp(spin.x, target.x, settle),
-          y: lerp(spin.y, target.y, settle),
-          z: lerp(spin.z, target.z, settle),
-        };
-        drawDiceCanvas(canvas, context, angles, progress);
+        const previewValue = Math.max(1, Math.min(6, Math.floor(ease * 29) % 6 + 1));
+        drawReferenceDice(canvas, context, {
+          topValue: progress > 0.78 ? finalValue : previewValue,
+          progress,
+          rollTwist: Math.sin(progress * Math.PI * 7) * (1 - progress) * 0.22,
+        });
         if (progress < 1) {
           this.frame = window.requestAnimationFrame(animate);
         } else {
           this.value = finalValue;
           element.dataset.value = finalValue;
-          drawDiceCanvas(canvas, context, target, 1);
+          drawReferenceDice(canvas, context, { topValue: finalValue, progress: 1 });
         }
       };
       this.frame = window.requestAnimationFrame(animate);
@@ -360,6 +350,214 @@ function createDiceRenderer(element) {
   };
   renderer.setValue(null);
   return renderer;
+}
+
+function drawReferenceDice(canvas, context, options = {}) {
+  const rect = canvas.getBoundingClientRect();
+  const size = Math.max(96, Math.round(rect.width || 140));
+  const ratio = window.devicePixelRatio || 1;
+  if (canvas.width !== size * ratio || canvas.height !== size * ratio) {
+    canvas.width = size * ratio;
+    canvas.height = size * ratio;
+  }
+
+  context.setTransform(ratio, 0, 0, ratio, 0, 0);
+  context.clearRect(0, 0, size, size);
+
+  const bounce = Math.sin((options.progress || 1) * Math.PI) * size * 0.08;
+  const squash = options.progress > 0.58 && options.progress < 0.75
+    ? 1 - Math.sin((options.progress - 0.58) / 0.17 * Math.PI) * 0.08
+    : 1;
+  const twist = options.rollTwist || 0;
+
+  context.save();
+  context.translate(size * 0.5, size * 0.5 - bounce);
+  context.rotate(twist);
+  context.scale(1 + (1 - squash) * 0.16, squash);
+  context.translate(-size * 0.5, -size * 0.5);
+
+  const point = ([x, y]) => ({ x: x * size, y: y * size });
+  const top = [[0.205, 0.34], [0.49, 0.17], [0.8, 0.31], [0.5, 0.495]].map(point);
+  const left = [[0.205, 0.34], [0.5, 0.495], [0.5, 0.795], [0.225, 0.64]].map(point);
+  const right = [[0.5, 0.495], [0.8, 0.31], [0.785, 0.66], [0.5, 0.795]].map(point);
+  const radius = size * 0.16;
+
+  drawReferenceShadow(context, size, options.progress || 1);
+  drawReferenceBody(context, [top, left, right], size);
+  drawReferenceFace(context, top, radius, ["#fffdf5", "#f8ead0", "#e7d1a8"], "top");
+  drawReferenceFace(context, left, radius, ["#fff2d8", "#ecd4aa", "#c7aa7e"], "left");
+  drawReferenceFace(context, right, radius, ["#f4ead8", "#dfceb3", "#b9ab91"], "right");
+  drawReferenceSeams(context, top, left, right, radius, size);
+
+  if (options.question) {
+    drawReferenceQuestion(context, top, size);
+  } else {
+    drawReferencePips(context, top, options.topValue || 1, size, "top");
+  }
+  drawReferencePips(context, left, 3, size, "left");
+  drawReferencePips(context, right, 5, size, "right");
+
+  context.restore();
+}
+
+function drawReferenceShadow(context, size, progress) {
+  context.save();
+  context.fillStyle = `rgba(55, 45, 34, ${0.18 + progress * 0.08})`;
+  context.filter = `blur(${size * 0.045}px)`;
+  context.beginPath();
+  context.ellipse(size * 0.55, size * 0.82, size * 0.34, size * 0.095, -0.08, 0, Math.PI * 2);
+  context.fill();
+  context.restore();
+}
+
+function drawReferenceBody(context, faces, size) {
+  context.save();
+  context.beginPath();
+  faces.forEach((face) => polygonPath(context, face));
+  const body = context.createLinearGradient(size * 0.18, size * 0.16, size * 0.84, size * 0.84);
+  body.addColorStop(0, "#fffdf4");
+  body.addColorStop(0.43, "#f5e5c5");
+  body.addColorStop(0.76, "#d4bc92");
+  body.addColorStop(1, "#a99572");
+  context.fillStyle = body;
+  context.shadowColor = "rgba(87, 66, 42, 0.33)";
+  context.shadowBlur = size * 0.105;
+  context.shadowOffsetY = size * 0.045;
+  context.fill();
+  context.restore();
+}
+
+function drawReferenceFace(context, points, radius, stops, side) {
+  context.save();
+  roundedPolygonPath(context, points, radius);
+  const gradient = context.createLinearGradient(points[0].x, points[0].y, points[2].x, points[2].y);
+  gradient.addColorStop(0, stops[0]);
+  gradient.addColorStop(0.54, stops[1]);
+  gradient.addColorStop(1, stops[2]);
+  context.fillStyle = gradient;
+  context.fill();
+  context.clip();
+
+  const x = points.reduce((sum, item) => sum + item.x, 0) / points.length;
+  const y = points.reduce((sum, item) => sum + item.y, 0) / points.length;
+  const highlight = context.createRadialGradient(x - radius * 1.8, y - radius * 1.7, 0, x, y, radius * 4.6);
+  highlight.addColorStop(0, side === "right" ? "rgba(255, 255, 255, 0.34)" : "rgba(255, 255, 255, 0.78)");
+  highlight.addColorStop(0.42, "rgba(255, 255, 255, 0.1)");
+  highlight.addColorStop(1, "rgba(129, 100, 62, 0.22)");
+  context.fillStyle = highlight;
+  context.fillRect(0, 0, context.canvas.width, context.canvas.height);
+
+  const panel = context.createLinearGradient(points[0].x, points[0].y, points[3].x, points[3].y);
+  panel.addColorStop(0, "rgba(255, 255, 255, 0.28)");
+  panel.addColorStop(0.5, "rgba(255, 255, 255, 0.02)");
+  panel.addColorStop(1, "rgba(111, 87, 56, 0.12)");
+  context.fillStyle = panel;
+  context.fillRect(0, 0, context.canvas.width, context.canvas.height);
+  context.restore();
+}
+
+function drawReferenceSeams(context, top, left, right, radius, size) {
+  context.save();
+  context.lineJoin = "round";
+  context.lineCap = "round";
+  context.lineWidth = size * 0.034;
+  context.strokeStyle = "rgba(255, 255, 255, 0.76)";
+  [top, left, right].forEach((face) => {
+    roundedPolygonPath(context, face, radius);
+    context.stroke();
+  });
+  context.lineWidth = size * 0.013;
+  context.strokeStyle = "rgba(122, 101, 72, 0.22)";
+  [top, left, right].forEach((face) => {
+    roundedPolygonPath(context, face, radius);
+    context.stroke();
+  });
+  context.restore();
+}
+
+function drawReferenceQuestion(context, face, size) {
+  const center = faceCenter(face);
+  const fontSize = size * 0.25;
+  context.save();
+  context.textAlign = "center";
+  context.textBaseline = "middle";
+  context.font = `900 ${fontSize}px ui-rounded, "Arial Rounded MT Bold", "Nunito", system-ui, sans-serif`;
+  context.lineJoin = "round";
+  context.shadowColor = "rgba(83, 45, 24, 0.22)";
+  context.shadowBlur = size * 0.018;
+  context.shadowOffsetY = size * 0.012;
+  context.strokeStyle = "rgba(255, 255, 255, 0.9)";
+  context.lineWidth = size * 0.018;
+  context.strokeText("?", center.x, center.y + size * 0.006);
+  context.fillStyle = "#e84033";
+  context.fillText("?", center.x, center.y + size * 0.006);
+  context.restore();
+}
+
+function drawReferencePips(context, face, value, size, side) {
+  const layouts = {
+    1: [[0, 0]],
+    2: [[-0.36, -0.34], [0.36, 0.34]],
+    3: [[-0.38, -0.36], [0, 0], [0.38, 0.36]],
+    4: [[-0.35, -0.35], [0.35, -0.35], [-0.35, 0.35], [0.35, 0.35]],
+    5: [[-0.37, -0.37], [0.37, -0.37], [0, 0], [-0.37, 0.37], [0.37, 0.37]],
+    6: [[-0.36, -0.42], [0.36, -0.42], [-0.36, 0], [0.36, 0], [-0.36, 0.42], [0.36, 0.42]],
+  };
+  const radius = side === "top" ? size * 0.045 : size * 0.043;
+  layouts[value].forEach(([u, v]) => {
+    const point = facePoint(face, 0.5 + u * 0.52, 0.5 + v * 0.52);
+    drawReferencePip(context, point, radius, side);
+  });
+}
+
+function drawReferencePip(context, point, radius, side) {
+  const rotation = side === "left" ? 0.78 : side === "right" ? -0.58 : 0;
+  const yScale = side === "top" ? 0.72 : 1.08;
+  context.save();
+  context.translate(point.x, point.y);
+  context.rotate(rotation);
+
+  const dent = context.createRadialGradient(-radius * 0.22, -radius * 0.34, radius * 0.12, 0, 0, radius * 1.55);
+  dent.addColorStop(0, "rgba(255, 255, 255, 0.86)");
+  dent.addColorStop(0.38, "rgba(160, 110, 70, 0.22)");
+  dent.addColorStop(1, "rgba(68, 42, 25, 0.3)");
+  context.fillStyle = dent;
+  context.beginPath();
+  context.ellipse(0, radius * 0.06, radius * 1.34, radius * yScale * 1.1, 0, 0, Math.PI * 2);
+  context.fill();
+
+  const red = context.createRadialGradient(-radius * 0.28, -radius * 0.32, radius * 0.1, 0, 0, radius * 1.05);
+  red.addColorStop(0, "#ff8d75");
+  red.addColorStop(0.48, "#ef4033");
+  red.addColorStop(1, "#a71912");
+  context.fillStyle = red;
+  context.beginPath();
+  context.ellipse(0, 0, radius, radius * yScale * 0.92, 0, 0, Math.PI * 2);
+  context.fill();
+
+  context.strokeStyle = "rgba(112, 36, 26, 0.28)";
+  context.lineWidth = Math.max(1, radius * 0.13);
+  context.stroke();
+
+  context.fillStyle = "rgba(255, 255, 255, 0.68)";
+  context.beginPath();
+  context.ellipse(-radius * 0.35, -radius * yScale * 0.34, radius * 0.27, radius * yScale * 0.18, -0.46, 0, Math.PI * 2);
+  context.fill();
+  context.restore();
+}
+
+function faceCenter(face) {
+  return {
+    x: face.reduce((sum, point) => sum + point.x, 0) / face.length,
+    y: face.reduce((sum, point) => sum + point.y, 0) / face.length,
+  };
+}
+
+function facePoint(face, u, v) {
+  const [a, b, c, d] = face;
+  const top = mixPoint(a, b, u);
+  const bottom = mixPoint(d, c, u);
+  return mixPoint(top, bottom, v);
 }
 
 function getDiceAngles(value) {

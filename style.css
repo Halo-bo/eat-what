@@ -404,8 +404,8 @@ button {
   z-index: 5;
   display: grid;
   place-items: center;
-  width: 104px;
-  height: 104px;
+  width: 126px;
+  height: 126px;
   padding: 0;
   border: 0;
   background: transparent;
@@ -421,25 +421,7 @@ button {
 }
 
 .dice-mark {
-  position: absolute;
-  z-index: 4;
-  display: grid;
-  place-items: center;
-  left: 50%;
-  top: 26%;
-  width: calc(var(--dice-size) * 0.52);
-  height: calc(var(--dice-size) * 0.52);
-  color: #df3d2f;
-  background: transparent;
-  font-size: calc(var(--dice-size) * 0.46);
-  font-weight: 950;
-  line-height: 1;
-  -webkit-text-stroke: max(2px, calc(var(--dice-size) * 0.035)) rgba(255, 255, 255, 0.9);
-  text-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.55),
-    0 5px 10px rgba(84, 44, 25, 0.28);
-  transform: translate(-50%, -50%) rotate(-3deg);
-  pointer-events: none;
+  display: none;
 }
 
 .dice-mark[hidden] {
@@ -448,11 +430,12 @@ button {
 
 .dice-canvas {
   position: absolute;
-  inset: -18%;
+  inset: -16%;
   z-index: 2;
   display: block;
-  width: 136%;
-  height: 136%;
+  width: 132%;
+  height: 132%;
+  filter: drop-shadow(0 15px 16px rgba(70, 53, 36, 0.22));
   pointer-events: none;
 }
 
@@ -1812,8 +1795,8 @@ button {
   }
 
   .board-dice {
-    width: 76px;
-    height: 76px;
+    width: 96px;
+    height: 96px;
     --dice-size: 54px;
     --dice-half: 27px;
   }
@@ -1958,8 +1941,8 @@ button {
   }
 
   .board-dice {
-    width: 68px;
-    height: 68px;
+    width: 86px;
+    height: 86px;
     --dice-size: 48px;
     --dice-half: 24px;
   }

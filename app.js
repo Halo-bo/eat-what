@@ -315,32 +315,29 @@ function getDiceRenderer(element) {
 }
 
 function createDiceRenderer(element) {
-  element.innerHTML = `<img class="dice-image" alt="" draggable="false" /><span class="dice-mark">?</span>`;
+  element.innerHTML = `<img class="dice-image" alt="" draggable="false" />`;
   const image = element.querySelector(".dice-image");
-  const mark = element.querySelector(".dice-mark");
   const renderer = {
     value: null,
     frame: null,
     setValue(value) {
       this.value = value;
-      image.src = getDiceImageSource(value || 1);
-      mark.hidden = Boolean(value);
+      image.src = value ? getDiceFinalImageSource(value) : getDiceImageSource(1);
     },
     roll(finalValue, duration) {
       window.cancelAnimationFrame(this.frame);
-      mark.hidden = true;
       const start = performance.now();
       const animate = (now) => {
         const progress = Math.min(1, (now - start) / duration);
         const ease = 1 - Math.pow(1 - progress, 3);
-        const previewValue = progress > 0.78 ? finalValue : (Math.floor(ease * 31) % 6) + 1;
+        const previewValue = progress > 0.84 ? finalValue : (Math.floor(ease * 31) % 6) + 1;
         image.src = getDiceImageSource(previewValue);
         if (progress < 1) {
           this.frame = window.requestAnimationFrame(animate);
         } else {
           this.value = finalValue;
           element.dataset.value = finalValue;
-          image.src = getDiceImageSource(finalValue);
+          image.src = getDiceFinalImageSource(finalValue);
         }
       };
       this.frame = window.requestAnimationFrame(animate);
@@ -353,6 +350,11 @@ function createDiceRenderer(element) {
 function getDiceImageSource(value) {
   const key = String(value || 1);
   return window.DICE_IMAGES?.[key] || `assets/dice/dice-${key}.png`;
+}
+
+function getDiceFinalImageSource(value) {
+  const key = String(value || 1);
+  return window.DICE_FRONT_IMAGES?.[key] || `assets/dice/dice-front-${key}.png`;
 }
 
 function drawReferenceDice(canvas, context, options = {}) {

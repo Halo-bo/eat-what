@@ -75,6 +75,22 @@ const foods = [
   { name: "腰果", kind: "fun", tag: "弯弯", icon: "cashew", vibe: "弯成这样还这么香，说明人生不必直线前进，拐一下可能更好吃。" },
   { name: "杏仁", kind: "light", tag: "清香", icon: "almond", vibe: "清清脆脆像给嘴巴敲木鱼，烦躁当场被敲到放下执念。" },
   { name: "奇异果", kind: "sweet", tag: "醒神", icon: "kiwi", vibe: "毛茸茸登场，自带 BGM。酸到眉毛打结，甜到怀疑人生，咬一口天灵盖打开，食欲开始跳科目三。" },
+  { name: "薯条", kind: "fun", tag: "咔嚓", icon: "fries", iconType: "png", vibe: "一根根金黄小天线，专门接收快乐信号，蘸点酱，理智当场下班。" },
+  { name: "炸鸡", kind: "warm", tag: "酥脆", icon: "fried-chicken", iconType: "png", vibe: "外壳咔嚓像开奖，肉汁一冲出来，嘴巴直接举牌：本局赢麻了。" },
+  { name: "西瓜", kind: "light", tag: "清凉", icon: "watermelon", iconType: "png", vibe: "红瓤一亮，夏天自动跪坐递勺，咬一口，热气被踢去门口罚站。" },
+  { name: "可乐", kind: "fun", tag: "冒泡", icon: "cola", iconType: "png", vibe: "气泡咕嘟咕嘟开会，第一口下去，灵魂开始打嗝式庆祝。" },
+  { name: "桃子", kind: "sweet", tag: "软萌", icon: "peach", iconType: "png", vibe: "粉粉嫩嫩像情绪软垫，一口咬下去，今天的暴躁被甜味抱走。" },
+  { name: "荔枝", kind: "sweet", tag: "爆汁", icon: "lychee", iconType: "png", vibe: "剥开像拆小礼物，汁水啪一下炸开，嘴巴当场宣布：朕很满意。" },
+  { name: "咖啡", kind: "warm", tag: "醒脑", icon: "coffee", iconType: "png", vibe: "苦香一上头，脑子从省电模式切到开会模式，眼皮被迫复工。" },
+  { name: "曲奇", kind: "sweet", tag: "奶香", icon: "cookie", iconType: "png", vibe: "圆圆一块小快乐，咬碎以后，饼干屑在嘴里开迷你演唱会。" },
+  { name: "苹果", kind: "light", tag: "脆甜", icon: "apple", iconType: "png", vibe: "红到很有主见，咔嚓一声，健康感和快乐感同时冲进办公室。" },
+  { name: "哈密瓜", kind: "sweet", tag: "蜜甜", icon: "hami-melon", iconType: "png", vibe: "甜得像给舌头发年终奖，香气慢悠悠走来，胃先鼓掌三下。" },
+  { name: "薯片", kind: "fun", tag: "薄脆", icon: "chips", iconType: "png", vibe: "薄薄一片但戏很多，咔嚓咔嚓，烦恼被嚼成背景音。" },
+  { name: "巧克力", kind: "sweet", tag: "浓郁", icon: "chocolate", iconType: "png", vibe: "一入口就开始融化，像快乐偷偷钻进大脑，把烦躁按进沙发缝。" },
+  { name: "肉串", kind: "warm", tag: "焦香", icon: "skewer", iconType: "png", vibe: "签子一举，江湖气就来了，孜然负责放烟花，嘴巴负责喊再来。" },
+  { name: "牛排", kind: "warm", tag: "豪横", icon: "steak", iconType: "png", vibe: "纹路一摆，气场两米八，切一口，今天直接升级成仪式感大户。" },
+  { name: "火锅", kind: "warm", tag: "沸腾", icon: "hotpot", iconType: "png", vibe: "锅底一滚，食欲全体起立，红汤白汤左右开弓，灵魂开始泡澡。" },
+  { name: "香肠", kind: "fun", tag: "弹牙", icon: "sausage", iconType: "png", vibe: "油亮亮一根快乐弯月，咬下去弹牙到嘴巴想原地转圈。" },
 ];
 
 const fortunes = [
@@ -1021,7 +1037,8 @@ function updateCenterStage(food, status) {
 }
 
 function getFoodIcon(food) {
-  return `assets/iconfont-food/${food.icon}.svg`;
+  if (window.FOOD_ICONS?.[food.icon]) return window.FOOD_ICONS[food.icon];
+  return `assets/iconfont-food/${food.icon}.${food.iconType || "svg"}`;
 }
 
 function buildReason(food, roll, fortuneSteps) {
@@ -1192,6 +1209,22 @@ function getFoodEmoji(food) {
     腰果: "🥜",
     杏仁: "🌰",
     奇异果: "🥝",
+    薯条: "🍟",
+    炸鸡: "🍗",
+    西瓜: "🍉",
+    可乐: "🥤",
+    桃子: "🍑",
+    荔枝: "🧃",
+    咖啡: "☕",
+    曲奇: "🍪",
+    苹果: "🍎",
+    哈密瓜: "🍈",
+    薯片: "🥔",
+    巧克力: "🍫",
+    肉串: "🍢",
+    牛排: "🥩",
+    火锅: "🍲",
+    香肠: "🌭",
     起点补给: "🍽️",
   };
   return emojis[food.name] || "🍽️";

@@ -360,6 +360,11 @@ function drawDiceCanvas(canvas, context, angles, progress = 1, options = {}) {
   context.setTransform(ratio, 0, 0, ratio, 0, 0);
   context.clearRect(0, 0, size, size);
 
+  if (options.blank) {
+    drawBlankDiceCanvas(context, size);
+    return;
+  }
+
   const bounce = Math.sin(progress * Math.PI) * (1 - progress) * size * 0.14;
   const squash = progress > 0.62 && progress < 0.78 ? 1 - Math.sin((progress - 0.62) / 0.16 * Math.PI) * 0.08 : 1;
   const center = { x: size / 2, y: size / 2 - bounce };
@@ -368,7 +373,7 @@ function drawDiceCanvas(canvas, context, angles, progress = 1, options = {}) {
 
   const shadowWidth = size * (0.46 + (1 - progress) * 0.12);
   context.save();
-  context.fillStyle = `rgba(28, 30, 32, ${0.16 + progress * 0.08})`;
+  context.fillStyle = `rgba(52, 41, 28, ${0.18 + progress * 0.08})`;
   context.filter = `blur(${size * 0.038}px)`;
   context.beginPath();
   context.ellipse(size / 2, size * 0.78, shadowWidth, size * 0.095, 0, 0, Math.PI * 2);
@@ -378,12 +383,32 @@ function drawDiceCanvas(canvas, context, angles, progress = 1, options = {}) {
   const faces = buildDiceFaces().map((face) => {
     const corners = face.corners.map((point) => rotatePoint(point, angles, squash));
     const normal = rotatePoint(face.normal, angles, 1, true);
-    return { ...face, corners, normal, depth: average(corners.map((point) => point.z)) };
-  }).sort((a, b) => a.depth - b.depth);
+    const projected = corners.map((point) => projectPoint(point, center, scale, camera));
+    return {
+      ...face,
+      corners,
+      normal,
+      projected,
+      area: Math.abs(polygonArea(projected)),
+      depth: average(corners.map((point) => point.z)),
+    };
+  });
 
-  faces.forEach((face) => {
-    if (face.normal.z <= -0.08) return;
-    drawDiceFace(context, face, center, scale, camera, options);
+  const visibleFaces = faces
+    .filter((face) => face.normal.z > -0.08)
+    .sort((a, b) => a.depth - b.depth);
+
+  const questionFace = options.blank
+    ? visibleFaces.reduce((largest, face) => face.area > largest.area ? face : largest, visibleFaces[0])
+    : null;
+
+  drawDiceBodyBase(context, visibleFaces, center, scale);
+
+  visibleFaces.forEach((face) => {
+    drawDiceFace(context, face, center, scale, camera, {
+      blank: options.blank,
+      question: Boolean(questionFace && questionFace.value === face.value),
+    });
   });
 }
 
@@ -407,37 +432,160 @@ function makeDiceFace(value, corners, normal) {
   };
 }
 
-function drawDiceFace(context, face, center, scale, camera, options = {}) {
-  const points = face.corners.map((point) => projectPoint(point, center, scale, camera));
-  const light = Math.max(0, face.normal.x * -0.18 + face.normal.y * -0.48 + face.normal.z * 0.9);
-  const white = Math.round(242 + light * 13);
-  const shade = Math.round(214 + light * 26);
+function drawBlankDiceCanvas(context, size) {
+  const point = ([x, y]) => ({ x: x * size, y: y * size });
+  const top = [[0.23, 0.34], [0.49, 0.18], [0.8, 0.3], [0.47, 0.48]].map(point);
+  const left = [[0.23, 0.34], [0.47, 0.48], [0.47, 0.82], [0.22, 0.68]].map(point);
+  const front = [[0.47, 0.48], [0.8, 0.3], [0.82, 0.67], [0.47, 0.82]].map(point);
+  const center = {
+    x: front.reduce((sum, item) => sum + item.x, 0) / front.length,
+    y: front.reduce((sum, item) => sum + item.y, 0) / front.length,
+  };
+  const radius = size * 0.13;
 
   context.save();
-  roundedPolygonPath(context, points, scale * 0.34);
+  context.fillStyle = "rgba(72, 56, 36, 0.26)";
+  context.filter = `blur(${size * 0.035}px)`;
+  context.beginPath();
+  context.ellipse(size * 0.54, size * 0.82, size * 0.34, size * 0.085, -0.08, 0, Math.PI * 2);
+  context.fill();
+  context.restore();
 
+  context.save();
+  context.beginPath();
+  [top, left, front].forEach((face) => polygonPath(context, face));
+  const body = context.createLinearGradient(size * 0.2, size * 0.16, size * 0.84, size * 0.86);
+  body.addColorStop(0, "#fffdf2");
+  body.addColorStop(0.46, "#f4e2bf");
+  body.addColorStop(1, "#bfa57d");
+  context.fillStyle = body;
+  context.shadowColor = "rgba(82, 62, 38, 0.3)";
+  context.shadowBlur = size * 0.08;
+  context.shadowOffsetY = size * 0.035;
+  context.fill();
+  context.restore();
+
+  drawBlankFace(context, top, radius, ["#fffdf4", "#f5e8cc", "#dcc49d"]);
+  drawBlankFace(context, left, radius, ["#fbefd5", "#ead2aa", "#c4a378"]);
+  drawBlankFace(context, front, radius, ["#f9edcf", "#e5c99c", "#b99b73"]);
+
+  context.save();
+  context.lineJoin = "round";
+  context.lineCap = "round";
+  context.lineWidth = size * 0.022;
+  context.strokeStyle = "rgba(255, 255, 255, 0.72)";
+  [top, left, front].forEach((face) => {
+    roundedPolygonPath(context, face, radius);
+    context.stroke();
+  });
+  context.lineWidth = size * 0.012;
+  context.strokeStyle = "rgba(116, 89, 58, 0.18)";
+  roundedPolygonPath(context, front, radius);
+  context.stroke();
+  context.restore();
+
+  drawQuestionGlyph(context, center.x, center.y + size * 0.005, size * 0.25);
+}
+
+function drawBlankFace(context, points, radius, stops) {
+  context.save();
+  roundedPolygonPath(context, points, radius);
   const gradient = context.createLinearGradient(points[0].x, points[0].y, points[2].x, points[2].y);
-  gradient.addColorStop(0, "rgb(255, 255, 255)");
-  gradient.addColorStop(0.58, `rgb(${white}, ${white}, ${white})`);
-  gradient.addColorStop(1, `rgb(${shade}, ${shade}, ${Math.min(232, shade + 4)})`);
+  gradient.addColorStop(0, stops[0]);
+  gradient.addColorStop(0.54, stops[1]);
+  gradient.addColorStop(1, stops[2]);
   context.fillStyle = gradient;
-  context.shadowColor = "rgba(0, 0, 0, 0.18)";
-  context.shadowBlur = scale * 0.1;
-  context.shadowOffsetY = scale * 0.05;
   context.fill();
   context.clip();
 
-  context.lineWidth = scale * 0.035;
+  const x = points.reduce((sum, item) => sum + item.x, 0) / points.length;
+  const y = points.reduce((sum, item) => sum + item.y, 0) / points.length;
+  const highlight = context.createRadialGradient(x - radius * 1.6, y - radius * 1.4, 0, x, y, radius * 4.2);
+  highlight.addColorStop(0, "rgba(255, 255, 255, 0.76)");
+  highlight.addColorStop(0.44, "rgba(255, 255, 255, 0.1)");
+  highlight.addColorStop(1, "rgba(122, 92, 54, 0.18)");
+  context.fillStyle = highlight;
+  context.fillRect(0, 0, context.canvas.width, context.canvas.height);
+  context.restore();
+}
+
+function drawDiceFace(context, face, center, scale, camera, options = {}) {
+  const points = face.projected || face.corners.map((point) => projectPoint(point, center, scale, camera));
+  const light = Math.max(0, face.normal.x * -0.18 + face.normal.y * -0.48 + face.normal.z * 0.9);
+  const cream = Math.round(239 + light * 14);
+  const shade = Math.round(213 + light * 24);
+
+  context.save();
+  roundedPolygonPath(context, points, scale * 0.42);
+
+  const gradient = context.createLinearGradient(points[0].x, points[0].y, points[2].x, points[2].y);
+  gradient.addColorStop(0, "rgb(255, 252, 241)");
+  gradient.addColorStop(0.45, `rgb(${cream}, ${Math.min(250, cream - 4)}, ${Math.min(237, cream - 18)})`);
+  gradient.addColorStop(1, `rgb(${shade}, ${Math.max(194, shade - 13)}, ${Math.max(166, shade - 34)})`);
+  context.fillStyle = gradient;
+  context.shadowColor = "rgba(76, 55, 31, 0.2)";
+  context.shadowBlur = scale * 0.14;
+  context.shadowOffsetY = scale * 0.04;
+  context.fill();
+  context.clip();
+
+  context.lineWidth = scale * 0.055;
   context.lineJoin = "round";
-  context.strokeStyle = "rgba(80, 84, 90, 0.08)";
-  roundedPolygonPath(context, points, scale * 0.34);
+  context.strokeStyle = "rgba(171, 147, 109, 0.28)";
+  roundedPolygonPath(context, points, scale * 0.42);
   context.stroke();
 
   drawFaceHighlight(context, points, scale);
   if (!options.blank) {
     drawPips(context, face.value, face.corners, center, scale, camera);
+  } else if (options.question) {
+    drawQuestionMark(context, face.corners, center, scale, camera);
   }
   context.restore();
+}
+
+function drawDiceBodyBase(context, faces, center, scale) {
+  if (!faces.length) return;
+
+  context.save();
+  context.beginPath();
+  faces.forEach((face) => {
+    polygonPath(context, face.projected);
+  });
+
+  const bodyGradient = context.createLinearGradient(
+    center.x - scale * 1.2,
+    center.y - scale * 1.25,
+    center.x + scale * 1.2,
+    center.y + scale * 1.3
+  );
+  bodyGradient.addColorStop(0, "#fffdf4");
+  bodyGradient.addColorStop(0.48, "#f4e7cc");
+  bodyGradient.addColorStop(1, "#bfa984");
+  context.fillStyle = bodyGradient;
+  context.shadowColor = "rgba(77, 58, 37, 0.28)";
+  context.shadowBlur = scale * 0.24;
+  context.shadowOffsetY = scale * 0.14;
+  context.fill();
+
+  context.shadowColor = "transparent";
+  context.lineJoin = "round";
+  context.lineCap = "round";
+  context.lineWidth = scale * 0.12;
+  context.strokeStyle = "rgba(255, 252, 242, 0.68)";
+  context.stroke();
+  context.lineWidth = scale * 0.035;
+  context.strokeStyle = "rgba(107, 88, 62, 0.18)";
+  context.stroke();
+  context.restore();
+}
+
+function polygonPath(context, points) {
+  points.forEach((point, index) => {
+    if (index === 0) context.moveTo(point.x, point.y);
+    else context.lineTo(point.x, point.y);
+  });
+  context.closePath();
 }
 
 function roundedPolygonPath(context, points, radius) {
@@ -472,10 +620,18 @@ function drawFaceHighlight(context, points, scale) {
   const x = points.reduce((sum, point) => sum + point.x, 0) / points.length;
   const y = points.reduce((sum, point) => sum + point.y, 0) / points.length;
   const gradient = context.createRadialGradient(x - scale * 0.34, y - scale * 0.32, 0, x, y, scale * 1.24);
-  gradient.addColorStop(0, "rgba(255, 255, 255, 0.64)");
-  gradient.addColorStop(0.38, "rgba(255, 255, 255, 0.14)");
-  gradient.addColorStop(1, "rgba(76, 82, 92, 0.2)");
+  gradient.addColorStop(0, "rgba(255, 255, 255, 0.72)");
+  gradient.addColorStop(0.35, "rgba(255, 255, 255, 0.18)");
+  gradient.addColorStop(1, "rgba(133, 104, 67, 0.2)");
   context.fillStyle = gradient;
+  context.fillRect(0, 0, context.canvas.width, context.canvas.height);
+
+  const sheen = context.createLinearGradient(points[0].x, points[0].y, points[2].x, points[2].y);
+  sheen.addColorStop(0, "rgba(255, 255, 255, 0.54)");
+  sheen.addColorStop(0.22, "rgba(255, 255, 255, 0.12)");
+  sheen.addColorStop(0.56, "rgba(255, 255, 255, 0)");
+  sheen.addColorStop(1, "rgba(126, 93, 52, 0.12)");
+  context.fillStyle = sheen;
   context.fillRect(0, 0, context.canvas.width, context.canvas.height);
 }
 
@@ -495,29 +651,64 @@ function drawPips(context, value, corners, center, scale, camera) {
     const radius = Math.max(4.2, projected.scale * scale * 0.12);
 
     context.save();
-    const dent = context.createRadialGradient(projected.x - radius * 0.28, projected.y - radius * 0.42, radius * 0.18, projected.x, projected.y, radius * 1.42);
-    dent.addColorStop(0, "rgba(255, 255, 255, 0.24)");
-    dent.addColorStop(0.32, "rgba(94, 98, 104, 0.3)");
-    dent.addColorStop(1, "rgba(0, 0, 0, 0.2)");
+    const dent = context.createRadialGradient(projected.x - radius * 0.2, projected.y - radius * 0.28, radius * 0.18, projected.x, projected.y, radius * 1.48);
+    dent.addColorStop(0, "rgba(255, 255, 255, 0.82)");
+    dent.addColorStop(0.42, "rgba(180, 139, 95, 0.2)");
+    dent.addColorStop(1, "rgba(79, 48, 27, 0.24)");
     context.fillStyle = dent;
     context.beginPath();
-    context.ellipse(projected.x, projected.y + radius * 0.04, radius * 1.16, radius * 1.02, 0, 0, Math.PI * 2);
+    context.ellipse(projected.x, projected.y + radius * 0.04, radius * 1.28, radius * 1.08, 0, 0, Math.PI * 2);
     context.fill();
 
-    const pipGradient = context.createRadialGradient(projected.x - radius * 0.3, projected.y - radius * 0.34, radius * 0.14, projected.x, projected.y, radius);
-    pipGradient.addColorStop(0, "#2b3034");
-    pipGradient.addColorStop(0.52, "#070809");
-    pipGradient.addColorStop(1, "#000000");
+    const pipGradient = context.createRadialGradient(projected.x - radius * 0.32, projected.y - radius * 0.34, radius * 0.1, projected.x, projected.y, radius * 1.08);
+    pipGradient.addColorStop(0, "#ff8a72");
+    pipGradient.addColorStop(0.45, "#ef3f31");
+    pipGradient.addColorStop(1, "#a91812");
     context.fillStyle = pipGradient;
     context.beginPath();
     context.ellipse(projected.x, projected.y, radius, radius * 0.9, 0, 0, Math.PI * 2);
     context.fill();
 
-    context.strokeStyle = "rgba(255, 255, 255, 0.18)";
-    context.lineWidth = Math.max(1, radius * 0.12);
+    context.strokeStyle = "rgba(121, 34, 25, 0.24)";
+    context.lineWidth = Math.max(1, radius * 0.14);
     context.stroke();
+
+    context.fillStyle = "rgba(255, 255, 255, 0.72)";
+    context.beginPath();
+    context.ellipse(projected.x - radius * 0.36, projected.y - radius * 0.34, radius * 0.28, radius * 0.18, -0.52, 0, Math.PI * 2);
+    context.fill();
     context.restore();
   });
+}
+
+function drawQuestionMark(context, corners, center, scale, camera) {
+  const [a, b, c, d] = corners;
+  const point = bilinearPoint(a, b, c, d, 0.5, 0.5);
+  const projected = projectPoint(point, center, scale, camera);
+  const fontSize = Math.max(28, scale * projected.scale * 0.82);
+  drawQuestionGlyph(context, projected.x, projected.y + fontSize * 0.02, fontSize);
+}
+
+function drawQuestionGlyph(context, x, y, fontSize) {
+  context.save();
+  context.textAlign = "center";
+  context.textBaseline = "middle";
+  context.font = `900 ${fontSize}px ui-rounded, "Arial Rounded MT Bold", "Nunito", system-ui, sans-serif`;
+  context.lineJoin = "round";
+  context.shadowColor = "rgba(88, 44, 23, 0.22)";
+  context.shadowBlur = scale * 0.08;
+  context.shadowOffsetY = scale * 0.045;
+  context.strokeStyle = "rgba(255, 255, 255, 0.78)";
+  context.lineWidth = Math.max(5, fontSize * 0.16);
+  context.strokeText("?", x, y);
+  context.fillStyle = "#df3d2f";
+  context.fillText("?", x, y);
+
+  context.shadowColor = "transparent";
+  context.fillStyle = "rgba(255, 255, 255, 0.66)";
+  context.font = `900 ${fontSize * 0.26}px ui-rounded, "Arial Rounded MT Bold", system-ui, sans-serif`;
+  context.fillText("?", x - fontSize * 0.13, y - fontSize * 0.27);
+  context.restore();
 }
 
 function rotatePoint(point, angles, squash = 1, normalOnly = false) {
@@ -561,6 +752,13 @@ function mixPoint(a, b, t) {
 
 function average(values) {
   return values.reduce((sum, value) => sum + value, 0) / values.length;
+}
+
+function polygonArea(points) {
+  return points.reduce((area, point, index) => {
+    const next = points[(index + 1) % points.length];
+    return area + point.x * next.y - next.x * point.y;
+  }, 0) / 2;
 }
 
 function lerp(start, end, amount) {

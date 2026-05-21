@@ -855,52 +855,50 @@ function buildReason(food, roll, fortuneSteps) {
 }
 
 function buildDongbeiReason({ food, luckyNumber, luckyTake, tagTake, command }) {
-  return `哎妈呀，${getWeatherDialect()}整啥？整${food.name}！
-幸运数字 ${luckyNumber}，${luckyTake}。「${food.tag}」气场杠杠的，困意见了都得改签下一班。
-${food.name}这小玩意儿贼会来事儿，${food.vibe}
+  return `哎妈呀，${getWeatherDialect()}整${food.name}！
+幸运 ${luckyNumber}：${luckyTake}。
+${tagTake}${food.name}今天很会来事儿，${shortVibe(food)}
 ${command}`;
 }
 
 function buildStandupReason({ food, luckyNumber, luckyTake, tagTake, command }) {
-  return `${getWeatherStandup()}这种状态你问我吃啥？${food.name}就很懂事，像一个知道你余额但不嘲笑你的朋友。
-幸运数字 ${luckyNumber}，${luckyTake}。今天这格「${food.tag}」不是标签，是食欲给你递的律师函。
-我咬第一口，脑子突然上线；第二口，开始理解人生；第三口，差点给冰箱道歉。
-${food.name}：${food.vibe}
+  return `${getWeatherStandup()}所以今天吃${food.name}，很合理，甚至有点离谱地合理。
+幸运 ${luckyNumber}：${luckyTake}。
+${food.tag}值拉满，咬一口，嘴巴先替你鼓掌。
 ${command}`;
 }
 
 function buildRapReason({ food, luckyNumber, tagTake, command, emoji }) {
   return `Yo——${getWeatherRap()}
-${food.name}在我手，${food.tag}有节奏
-咬一口 嘶哈哈 食欲直接开大招
-幸运数字 ${luckyNumber} ${luckyNumber} ${luckyNumber}，吃完状态 King King King
-${tagTake}
-${food.vibe}
+${food.name}在我手，${food.tag}有节奏。
+幸运 ${luckyNumber}，饭运不发愁。
+${tagTake}${shortVibe(food)}
 ${command} ${emoji}`;
 }
 
 function buildFortuneRadioReason({ food, luckyNumber, luckyTake, tagTake, command }) {
-  return `【饭运电台插播】${state.weather.text}，当前频道出现强烈咀嚼信号。
-本台掐指一算，幸运数字 ${luckyNumber}，${luckyTake}。请注意，「${food.tag}」能量正在从棋盘右下角冒泡。
-${tagTake} 如果你此刻假装不饿，胃会立刻提交匿名举报。
-本期指定嘉宾：${food.name}。${food.vibe}
+  return `【饭运电台】${state.weather.text}，检测到嘴巴开始闪灯。
+幸运 ${luckyNumber}：${luckyTake}。
+本期指定嘉宾：${food.name}。${tagTake}
 ${command}`;
 }
 
 function buildOverlordReason({ food, luckyNumber, tagTake, command }) {
-  return `饭桌霸总推门而入：今天，所有选择都给${food.name}让路。
-天气？只是背景板。运势？已经被${state.fortune.name}收购。幸运数字 ${luckyNumber} 一亮，全场筷子自动立正。
-「${food.tag}」气场开始接管会议室，${tagTake}
-${food.name}低声说：${food.vibe}
+  return `饭桌霸总宣布：今天，${food.name}上位。
+${state.fortune.name}已签字，幸运 ${luckyNumber} 当场盖章。
+${tagTake}${shortVibe(food)}
 ${command}`;
 }
 
 function buildCustomerServiceReason({ food, luckyNumber, luckyTake, command }) {
-  return `您好，您排队的食欲已叫号，当前办理窗口：${food.name}。
-经系统检测，天气参数为「${state.weather.text}」，运势插件显示「${state.fortune.name}」，幸运数字 ${luckyNumber}，${luckyTake}。
-温馨提示：「${food.tag}」服务已自动为您开通，拒绝可能导致嘴巴发出抗议。
-本次推荐说明：${food.vibe}
+  return `您好，食欲已叫号：请到${food.name}窗口办理。
+天气「${state.weather.text}」，运势「${state.fortune.name}」，幸运 ${luckyNumber}：${luckyTake}。
+${food.tag}服务已开通，拒绝会导致嘴巴投诉。
 ${command}`;
+}
+
+function shortVibe(food) {
+  return food.vibe.split(/[，。！？]/)[0];
 }
 
 function getWeatherSetup(food) {
@@ -921,10 +919,10 @@ function getWeatherDialect() {
 }
 
 function getWeatherStandup() {
-  if (state.weather.mood === "hot") return "这天一热，人就容易做傻事。我刚才对着冰箱沉思三分钟，差点给冷冻层鞠躬。";
-  if (state.weather.mood === "rain") return "一下雨，人就容易深沉。我看着窗户发呆，感觉自己像一块没放盐的豆腐。";
-  if (state.weather.mood === "cool") return "这天气一凉，人就想找点安慰。我刚才摸了摸外套，外套说它也饿。";
-  return "今天这天气吧，不好不坏，像老板说的『简单聊两句』，最后聊了三小时。";
+  if (state.weather.mood === "hot") return "天一热，脑子就想罢工。";
+  if (state.weather.mood === "rain") return "一下雨，人就像没放盐的豆腐。";
+  if (state.weather.mood === "cool") return "天气一凉，外套都说它饿。";
+  return "今天天气像老板说『简单聊两句』。";
 }
 
 function getWeatherRap() {
@@ -940,27 +938,27 @@ function getLuckyNumber(food, roll) {
 
 function getLuckyTake(luckyNumber) {
   const takes = {
-    1: "1 是筷子站军姿，说明今天嘴巴纪律严明，只听好吃的指挥",
-    2: "2 像两只碗排队，左碗喊饿，右碗喊再来一口",
-    3: "3 像嘴角上扬两次半，快乐已经提前泄露",
-    4: "4 平平稳稳，适合把食欲安全护送到胃里",
-    5: "5 是饭点的中场哨，吹响之后谁还装不饿谁尴尬",
-    6: "6 站起来就是 9，说明今天的运气会自己翻面",
-    7: "7 像小勺子拐弯，专门把好吃的往你这边舀",
-    8: "8 是两个圆滚滚的饭碗抱在一起，富贵得很可疑",
-    9: "9 谐音久，吃一口能把快乐续到下个饭点",
+    1: "筷子站军姿，嘴巴听指挥",
+    2: "两只碗排队，一个喊饿一个喊再来",
+    3: "嘴角偷偷上扬，快乐漏馅了",
+    4: "稳稳落袋，胃很安心",
+    5: "饭点哨声响，装不饿很尴尬",
+    6: "6 翻身像 9，运气会转弯",
+    7: "小勺子拐弯，好吃的往你这舀",
+    8: "两个饭碗抱抱，富贵得可疑",
+    9: "快乐续杯，能撑到下个饭点",
   };
   return takes[luckyNumber];
 }
 
 function getTagTake(food, luckyNumber, roll) {
   const takes = [
-    `这一格「${food.tag}」像开了挂，咻一下把困意踢到门外。`,
-    `「${food.tag}」气场不是一般强，是路过都要回头看菜单的程度。`,
-    `今天「${food.tag}」负责撑场面，连空气都变得有点想蘸酱。`,
-    `「${food.tag}」能量正在飙升，建议嘴巴立刻进入工作状态。`,
-    `这一口「${food.tag}」属于饭运指定动作，少吃一口都像错过彩蛋。`,
-    `「${food.tag}」已经在你脑门贴了便签：别犟，快吃。`,
+    `「${food.tag}」把困意一脚踢飞。`,
+    `「${food.tag}」气场强到菜单都回头。`,
+    `「${food.tag}」负责撑场面，空气都想蘸酱。`,
+    `「${food.tag}」能量飙升，嘴巴请上岗。`,
+    `这一口是饭运指定动作，少吃像错过彩蛋。`,
+    `「${food.tag}」已贴便签：别犟，快吃。`,
   ];
   return takes[(luckyNumber + roll + food.name.length) % takes.length];
 }

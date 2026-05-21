@@ -18,7 +18,9 @@ const foodPhoto = document.querySelector("#foodPhoto");
 const foodImage = document.querySelector("#foodImage");
 const foodEmoji = document.querySelector("#foodEmoji");
 const boardDice = document.querySelector("#boardDice");
+const dicePad = document.querySelector(".dice-pad");
 const diceRenderers = new Map();
+let lastRollInputAt = 0;
 
 const state = {
   board: [],
@@ -115,13 +117,17 @@ function init() {
   positionMascot(false);
   fetchWeatherByIp();
 
-  rollBtn.addEventListener("click", rollDice);
-  boardDice.addEventListener("click", rollDice);
+  rollBtn.addEventListener("click", requestRoll);
+  boardDice.addEventListener("click", requestRoll);
+  dicePad?.addEventListener("click", requestRoll);
+  dicePad?.addEventListener("pointerup", requestRoll);
   characterOptions.addEventListener("click", handleCharacterChoice);
   shuffleBtn.addEventListener("click", () => {
     if (state.rolling) return;
     shuffleBoard();
     state.position = 0;
+    boardDice.disabled = false;
+    rollBtn.disabled = false;
     setDiceFace(boardDice, null);
     stepText.textContent = "棋盘已重开";
     resultTitle.textContent = "新棋盘闪亮登场";
@@ -130,6 +136,14 @@ function init() {
     updateCenterStage(getCurrentFood(), "idle");
     positionMascot(false);
   });
+}
+
+function requestRoll(event) {
+  event?.preventDefault();
+  const now = performance.now();
+  if (now - lastRollInputAt < 220) return;
+  lastRollInputAt = now;
+  rollDice();
 }
 
 function handleCharacterChoice(event) {
@@ -214,36 +228,47 @@ async function rollDice() {
   if (state.rolling) return;
   state.rolling = true;
   rollBtn.disabled = true;
-  updateCenterStage(getCurrentFood(), "walking");
+  boardDice.disabled = true;
 
-  const roll = Math.floor(Math.random() * 6) + 1;
-  await tumbleDice(roll);
-
-  const fortuneSteps = state.fortune.shift;
-  const totalSteps = roll + fortuneSteps;
-  stepText.textContent = `骰子 ${roll} + 运势 ${fortuneSteps} = ${totalSteps} 步`;
-
-  appendLog(`掷出 <strong>${roll}</strong> 点，${state.fortune.name} 追加 <strong>${fortuneSteps}</strong> 步。`);
-
-  for (let step = 0; step < totalSteps; step += 1) {
-    state.position = (state.position + 1) % pathCells.length;
-    markActiveTile();
-    positionMascot(true);
+  try {
     updateCenterStage(getCurrentFood(), "walking");
-    await wait(310);
+
+    const roll = Math.floor(Math.random() * 6) + 1;
+    await tumbleDice(roll);
+
+    const fortuneSteps = state.fortune.shift;
+    const totalSteps = roll + fortuneSteps;
+    stepText.textContent = `骰子 ${roll} + 运势 ${fortuneSteps} = ${totalSteps} 步`;
+
+    appendLog(`掷出 <strong>${roll}</strong> 点，${state.fortune.name} 追加 <strong>${fortuneSteps}</strong> 步。`);
+
+    for (let step = 0; step < totalSteps; step += 1) {
+      state.position = (state.position + 1) % pathCells.length;
+      markActiveTile();
+      positionMascot(true);
+      updateCenterStage(getCurrentFood(), "walking");
+      await wait(310);
+    }
+
+    const food = getCurrentFood() || getStartRewardFood(roll);
+    const reason = buildReason(food, roll, fortuneSteps);
+    resultTitle.textContent = food.name;
+    resultText.textContent = reason;
+    updateCenterStage(food, "landed");
+    appendLog(state.position === 0
+      ? `回到 <strong>起点</strong>：触发 <strong>${food.name}</strong>。`
+      : `落在第 <strong>${String(state.position).padStart(2, "0")}</strong> 格：<strong>${food.name}</strong>。`);
+  } catch (error) {
+    console.error(error);
+    document.documentElement.dataset.lastRollError = error?.message || String(error);
+    resultTitle.textContent = "骰子卡壳了";
+    resultText.textContent = "命运刚才脚滑了一下。再戳一次，饭局马上重启，别让宇宙装死。";
+    updateCenterStage(getCurrentFood(), "idle");
+  } finally {
+    rollBtn.disabled = false;
+    boardDice.disabled = false;
+    state.rolling = false;
   }
-
-  const food = getCurrentFood() || getStartRewardFood(roll);
-  const reason = buildReason(food, roll, fortuneSteps);
-  resultTitle.textContent = food.name;
-  resultText.textContent = reason;
-  updateCenterStage(food, "landed");
-  appendLog(state.position === 0
-    ? `回到 <strong>起点</strong>：触发 <strong>${food.name}</strong>。`
-    : `落在第 <strong>${String(state.position).padStart(2, "0")}</strong> 格：<strong>${food.name}</strong>。`);
-
-  rollBtn.disabled = false;
-  state.rolling = false;
 }
 
 function getCurrentFood() {
@@ -434,14 +459,14 @@ function makeDiceFace(value, corners, normal) {
 
 function drawBlankDiceCanvas(context, size) {
   const point = ([x, y]) => ({ x: x * size, y: y * size });
-  const top = [[0.23, 0.34], [0.49, 0.18], [0.8, 0.3], [0.47, 0.48]].map(point);
-  const left = [[0.23, 0.34], [0.47, 0.48], [0.47, 0.82], [0.22, 0.68]].map(point);
-  const front = [[0.47, 0.48], [0.8, 0.3], [0.82, 0.67], [0.47, 0.82]].map(point);
+  const top = [[0.22, 0.32], [0.49, 0.17], [0.81, 0.3], [0.5, 0.48]].map(point);
+  const left = [[0.22, 0.32], [0.5, 0.48], [0.49, 0.81], [0.23, 0.65]].map(point);
+  const front = [[0.5, 0.48], [0.81, 0.3], [0.82, 0.66], [0.49, 0.81]].map(point);
   const center = {
-    x: front.reduce((sum, item) => sum + item.x, 0) / front.length,
-    y: front.reduce((sum, item) => sum + item.y, 0) / front.length,
+    x: top.reduce((sum, item) => sum + item.x, 0) / top.length,
+    y: top.reduce((sum, item) => sum + item.y, 0) / top.length,
   };
-  const radius = size * 0.13;
+  const radius = size * 0.16;
 
   context.save();
   context.fillStyle = "rgba(72, 56, 36, 0.26)";
@@ -465,7 +490,7 @@ function drawBlankDiceCanvas(context, size) {
   context.fill();
   context.restore();
 
-  drawBlankFace(context, top, radius, ["#fffdf4", "#f5e8cc", "#dcc49d"]);
+  drawBlankFace(context, top, radius, ["#fffdf7", "#f8e9ca", "#dec59b"]);
   drawBlankFace(context, left, radius, ["#fbefd5", "#ead2aa", "#c4a378"]);
   drawBlankFace(context, front, radius, ["#f9edcf", "#e5c99c", "#b99b73"]);
 
@@ -484,7 +509,7 @@ function drawBlankDiceCanvas(context, size) {
   context.stroke();
   context.restore();
 
-  drawQuestionGlyph(context, center.x, center.y + size * 0.005, size * 0.25);
+  drawQuestionGlyph(context, center.x, center.y, size * 0.22);
 }
 
 function drawBlankFace(context, points, radius, stops) {
@@ -696,8 +721,8 @@ function drawQuestionGlyph(context, x, y, fontSize) {
   context.font = `900 ${fontSize}px ui-rounded, "Arial Rounded MT Bold", "Nunito", system-ui, sans-serif`;
   context.lineJoin = "round";
   context.shadowColor = "rgba(88, 44, 23, 0.22)";
-  context.shadowBlur = scale * 0.08;
-  context.shadowOffsetY = scale * 0.045;
+  context.shadowBlur = fontSize * 0.1;
+  context.shadowOffsetY = fontSize * 0.055;
   context.strokeStyle = "rgba(255, 255, 255, 0.78)";
   context.lineWidth = Math.max(5, fontSize * 0.16);
   context.strokeText("?", x, y);

@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>吃点啥 · 美食大富翁</title>
-    <link rel="stylesheet" href="./style.css?v=rounded-dice-4" />
+    <link rel="stylesheet" href="./style.css?v=rounded-dice-clickfix-3" />
   </head>
   <body>
     <main class="game-shell">
@@ -43,8 +43,8 @@
               <strong id="centerFoodName">掷骰后揭晓</strong>
             </div>
           </section>
-          <div class="dice-pad" aria-label="骰子投掷区">
-            <button class="board-dice unknown" id="boardDice" aria-label="在棋盘右下角掷骰子"></button>
+          <div class="dice-pad" aria-label="骰子投掷区" onclick="requestRoll(event)" onpointerup="requestRoll(event)">
+            <button class="board-dice unknown" id="boardDice" type="button" aria-label="在棋盘右下角掷骰子" onclick="requestRoll(event)"></button>
           </div>
           <div class="character corgi small mascot sitting" id="mascot" aria-label="行走中的角色">
             <img class="character-photo corgi-photo" src="./assets/characters/corgi.png?v=character-avatars" alt="" />
@@ -104,8 +104,8 @@
         </section>
 
         <div class="actions">
-          <button class="primary" id="rollBtn">开摇！</button>
-          <button class="secondary" id="shuffleBtn">重洗饭运</button>
+          <button class="primary" id="rollBtn" type="button" onclick="requestRoll(event)">开摇！</button>
+          <button class="secondary" id="shuffleBtn" type="button">重洗饭运</button>
         </div>
 
         <section class="log-panel">
@@ -118,6 +118,6 @@
       </aside>
     </main>
 
-    <script src="./app.js?v=rounded-dice-4"></script>
+    <script src="./app.js?v=rounded-dice-clickfix-3"></script>
   </body>
 </html>

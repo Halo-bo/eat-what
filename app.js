@@ -311,6 +311,7 @@ function setSpinnerValue(element, value) {
 }
 
 async function spinWheel(finalValue) {
+  dicePad?.classList.add("hint-dismissed");
   boardDice.classList.remove("spinning");
   boardDice.offsetHeight;
   getSpinnerRenderer(boardDice).spin(finalValue, 2200);

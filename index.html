@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>吃点啥 · 美食大富翁</title>
-    <link rel="stylesheet" href="./style.css?v=expanded-foods" />
+    <link rel="stylesheet" href="./style.css?v=spinner-hint" />
   </head>
   <body>
     <main class="game-shell">
@@ -44,6 +44,7 @@
             </div>
           </section>
           <div class="spinner-pad" aria-label="转盘投掷区" onclick="requestRoll(event)" onpointerup="requestRoll(event)">
+            <img class="spinner-hint" src="./assets/ui/click-sign.png?v=spinner-hint" alt="" />
             <button class="board-spinner unknown" id="boardDice" type="button" aria-label="在棋盘右下角转动指针" onclick="requestRoll(event)"></button>
           </div>
           <div class="character corgi small mascot sitting" id="mascot" aria-label="行走中的角色">
@@ -118,6 +119,6 @@
       </aside>
     </main>
 
-    <script src="./app.js?v=expanded-foods"></script>
+    <script src="./app.js?v=spinner-hint"></script>
   </body>
 </html>

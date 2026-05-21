@@ -396,6 +396,29 @@ button {
   pointer-events: none;
 }
 
+.spinner-hint {
+  position: absolute;
+  left: 50%;
+  top: -96px;
+  z-index: 9;
+  display: block;
+  width: 150px;
+  height: auto;
+  filter: drop-shadow(0 8px 10px rgba(74, 43, 15, 0.24));
+  transform: translateX(-50%);
+  transform-origin: 50% 90%;
+  animation: spinner-hint-bob 1.55s ease-in-out infinite;
+  transition: opacity 0.24s ease, transform 0.24s ease;
+  pointer-events: none;
+  user-select: none;
+}
+
+.spinner-pad.hint-dismissed .spinner-hint {
+  opacity: 0;
+  transform: translateX(-50%) translateY(6px) scale(0.92);
+  animation-play-state: paused;
+}
+
 .board-spinner {
   position: absolute;
   left: 50%;
@@ -404,8 +427,8 @@ button {
   z-index: 5;
   display: grid;
   place-items: center;
-  width: 142px;
-  height: 142px;
+  width: 158px;
+  height: 158px;
   padding: 0;
   border: 0;
   background: transparent;
@@ -477,17 +500,17 @@ button {
   z-index: 2;
   display: grid;
   place-items: center;
-  width: 34px;
-  height: 34px;
-  margin: -17px;
+  width: 38px;
+  height: 38px;
+  margin: -19px;
   color: #fff;
-  font-size: 1.95rem;
+  font-size: 2.1rem;
   font-weight: 950;
   line-height: 1;
   text-shadow:
     0 2px 0 rgba(104, 64, 23, 0.3),
     0 0 5px rgba(134, 75, 22, 0.18);
-  transform: rotate(calc(var(--i) * 45deg)) translateY(-43px) rotate(calc(var(--i) * -45deg));
+  transform: rotate(calc(var(--i) * 45deg)) translateY(-49px) rotate(calc(var(--i) * -45deg));
 }
 
 .spinner-hub {
@@ -495,8 +518,8 @@ button {
   left: 50%;
   top: 50%;
   z-index: 6;
-  width: 42px;
-  height: 42px;
+  width: 46px;
+  height: 46px;
   border: 4px solid #f29913;
   border-radius: 50%;
   background:
@@ -514,8 +537,8 @@ button {
   left: 50%;
   bottom: calc(50% - 13px);
   z-index: 5;
-  width: 32px;
-  height: 74px;
+  width: 34px;
+  height: 82px;
   border-radius: 18px 18px 12px 12px;
   background:
     radial-gradient(circle at 34% 18%, rgba(255, 244, 165, 0.7) 0 8%, transparent 17%),
@@ -548,6 +571,16 @@ button {
   }
   45% {
     filter: saturate(1.18) brightness(1.06);
+  }
+}
+
+@keyframes spinner-hint-bob {
+  0%,
+  100% {
+    transform: translateX(-50%) translateY(0) rotate(-1deg);
+  }
+  50% {
+    transform: translateX(-50%) translateY(-7px) rotate(1.5deg);
   }
 }
 
@@ -1939,17 +1972,22 @@ button {
     line-height: 1.12;
   }
 
+  .spinner-hint {
+    top: -72px;
+    width: 112px;
+  }
+
   .board-spinner {
-    width: 102px;
-    height: 102px;
+    width: 114px;
+    height: 114px;
   }
 
   .spinner-number {
     width: 26px;
     height: 26px;
     margin: -13px;
-    font-size: 1.45rem;
-    transform: rotate(calc(var(--i) * 45deg)) translateY(-31px) rotate(calc(var(--i) * -45deg));
+    font-size: 1.5rem;
+    transform: rotate(calc(var(--i) * 45deg)) translateY(-35px) rotate(calc(var(--i) * -45deg));
   }
 
   .spinner-hub {
@@ -1958,8 +1996,8 @@ button {
   }
 
   .spinner-pointer {
-    width: 24px;
-    height: 52px;
+    width: 25px;
+    height: 58px;
     bottom: calc(50% - 10px);
     transform-origin: 50% calc(100% - 10px);
   }
@@ -2103,14 +2141,19 @@ button {
     height: 62px;
   }
 
+  .spinner-hint {
+    top: -66px;
+    width: 104px;
+  }
+
   .board-spinner {
-    width: 92px;
-    height: 92px;
+    width: 104px;
+    height: 104px;
   }
 
   .spinner-number {
-    font-size: 1.3rem;
-    transform: rotate(calc(var(--i) * 45deg)) translateY(-28px) rotate(calc(var(--i) * -45deg));
+    font-size: 1.34rem;
+    transform: rotate(calc(var(--i) * 45deg)) translateY(-32px) rotate(calc(var(--i) * -45deg));
   }
 
   .tile strong {

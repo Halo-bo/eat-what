@@ -18,8 +18,8 @@ const foodPhoto = document.querySelector("#foodPhoto");
 const foodImage = document.querySelector("#foodImage");
 const foodEmoji = document.querySelector("#foodEmoji");
 const boardDice = document.querySelector("#boardDice");
-const dicePad = document.querySelector(".dice-pad");
-const diceRenderers = new Map();
+const dicePad = document.querySelector(".spinner-pad");
+const spinnerRenderers = new Map();
 let lastRollInputAt = 0;
 
 const state = {
@@ -111,7 +111,7 @@ function init() {
   weatherText.textContent = state.weather.text;
 
   shuffleBoard();
-  setDiceFace(boardDice, null);
+  setSpinnerValue(boardDice, null);
   applyCharacter("corgi");
   updateCenterStage(getCurrentFood(), "idle");
   positionMascot(false);
@@ -128,7 +128,7 @@ function init() {
     state.position = 0;
     boardDice.disabled = false;
     rollBtn.disabled = false;
-    setDiceFace(boardDice, null);
+    setSpinnerValue(boardDice, null);
     stepText.textContent = "棋盘已重开";
     resultTitle.textContent = "新棋盘闪亮登场";
     resultText.textContent = "美食顺序已被命运抓起来摇匀。上一局作废，饭运重新投胎，准备开癫！";
@@ -233,14 +233,13 @@ async function rollDice() {
   try {
     updateCenterStage(getCurrentFood(), "walking");
 
-    const roll = Math.floor(Math.random() * 6) + 1;
-    await tumbleDice(roll);
+    const spinValue = Math.floor(Math.random() * 8) + 1;
+    await spinWheel(spinValue);
 
-    const fortuneSteps = state.fortune.shift;
-    const totalSteps = roll + fortuneSteps;
-    stepText.textContent = `骰子 ${roll} + 运势 ${fortuneSteps} = ${totalSteps} 步`;
+    const totalSteps = spinValue;
+    stepText.textContent = `转盘停在 ${spinValue}：走 ${totalSteps} 步`;
 
-    appendLog(`掷出 <strong>${roll}</strong> 点，${state.fortune.name} 追加 <strong>${fortuneSteps}</strong> 步。`);
+    appendLog(`指针停在 <strong>${spinValue}</strong>，饭运专车发车 <strong>${totalSteps}</strong> 步。`);
 
     for (let step = 0; step < totalSteps; step += 1) {
       state.position = (state.position + 1) % pathCells.length;
@@ -250,8 +249,8 @@ async function rollDice() {
       await wait(310);
     }
 
-    const food = getCurrentFood() || getStartRewardFood(roll);
-    const reason = buildReason(food, roll, fortuneSteps);
+    const food = getCurrentFood() || getStartRewardFood(spinValue);
+    const reason = buildReason(food, spinValue, 0);
     resultTitle.textContent = food.name;
     resultText.textContent = reason;
     updateCenterStage(food, "landed");
@@ -261,7 +260,7 @@ async function rollDice() {
   } catch (error) {
     console.error(error);
     document.documentElement.dataset.lastRollError = error?.message || String(error);
-    resultTitle.textContent = "骰子卡壳了";
+    resultTitle.textContent = "转盘卡壳了";
     resultText.textContent = "命运刚才脚滑了一下。再戳一次，饭局马上重启，别让宇宙装死。";
     updateCenterStage(getCurrentFood(), "idle");
   } finally {
@@ -287,74 +286,67 @@ function getStartRewardFood(roll) {
   };
 }
 
-function setDiceFace(element, value) {
+function setSpinnerValue(element, value) {
   if (!element) return;
   element.classList.toggle("unknown", !value);
   element.dataset.value = value || "";
-  const renderer = getDiceRenderer(element);
+  const renderer = getSpinnerRenderer(element);
   renderer.setValue(value);
 }
 
-async function tumbleDice(finalValue) {
-  boardDice.classList.remove("rolling");
+async function spinWheel(finalValue) {
+  boardDice.classList.remove("spinning");
   boardDice.offsetHeight;
-  getDiceRenderer(boardDice).roll(finalValue, 1320);
-  boardDice.classList.add("rolling");
+  getSpinnerRenderer(boardDice).spin(finalValue, 2200);
+  boardDice.classList.add("spinning");
 
-  const duration = 1320;
+  const duration = 2200;
   await wait(duration);
-  setDiceFace(boardDice, finalValue);
-  boardDice.classList.remove("rolling");
+  boardDice.classList.remove("spinning");
 }
 
-function getDiceRenderer(element) {
-  if (!diceRenderers.has(element)) {
-    diceRenderers.set(element, createDiceRenderer(element));
+function getSpinnerRenderer(element) {
+  if (!spinnerRenderers.has(element)) {
+    spinnerRenderers.set(element, createSpinnerRenderer(element));
   }
-  return diceRenderers.get(element);
+  return spinnerRenderers.get(element);
 }
 
-function createDiceRenderer(element) {
-  element.innerHTML = `<img class="dice-image" alt="" draggable="false" />`;
-  const image = element.querySelector(".dice-image");
+function createSpinnerRenderer(element) {
+  element.innerHTML = `
+    <span class="spinner-wheel" aria-hidden="true">
+      ${Array.from({ length: 8 }, (_, index) => `<span class="spinner-number" style="--i:${index}">${index + 1}</span>`).join("")}
+    </span>
+    <span class="spinner-hub" aria-hidden="true"></span>
+    <span class="spinner-pointer" aria-hidden="true"></span>
+  `;
+  const pointer = element.querySelector(".spinner-pointer");
   const renderer = {
     value: null,
-    frame: null,
+    angle: 0,
     setValue(value) {
       this.value = value;
-      image.src = value ? getDiceFinalImageSource(value) : getDiceImageSource(1);
+      if (!value) {
+        this.angle = 0;
+        pointer.style.transform = "translateX(-50%) rotate(0deg)";
+        return;
+      }
+      this.angle = (value - 1) * 45;
+      pointer.style.transform = `translateX(-50%) rotate(${this.angle}deg)`;
     },
-    roll(finalValue, duration) {
-      window.cancelAnimationFrame(this.frame);
-      const start = performance.now();
-      const animate = (now) => {
-        const progress = Math.min(1, (now - start) / duration);
-        const ease = 1 - Math.pow(1 - progress, 3);
-        const previewValue = progress > 0.84 ? finalValue : (Math.floor(ease * 31) % 6) + 1;
-        image.src = getDiceImageSource(previewValue);
-        if (progress < 1) {
-          this.frame = window.requestAnimationFrame(animate);
-        } else {
-          this.value = finalValue;
-          element.dataset.value = finalValue;
-          image.src = getDiceFinalImageSource(finalValue);
-        }
-      };
-      this.frame = window.requestAnimationFrame(animate);
+    spin(finalValue, duration) {
+      const targetAngle = (finalValue - 1) * 45;
+      const completedTurns = Math.ceil(this.angle / 360);
+      const extraTurns = 5 + Math.floor(Math.random() * 3);
+      this.angle = (completedTurns + extraTurns) * 360 + targetAngle;
+      pointer.style.transitionDuration = `${duration}ms`;
+      pointer.style.transform = `translateX(-50%) rotate(${this.angle}deg)`;
+      this.value = finalValue;
+      element.dataset.value = finalValue;
     },
   };
   renderer.setValue(null);
   return renderer;
-}
-
-function getDiceImageSource(value) {
-  const key = String(value || 1);
-  return window.DICE_IMAGES?.[key] || `assets/dice/dice-${key}.png`;
-}
-
-function getDiceFinalImageSource(value) {
-  const key = String(value || 1);
-  return window.DICE_FRONT_IMAGES?.[key] || `assets/dice/dice-front-${key}.png`;
 }
 
 function drawReferenceDice(canvas, context, options = {}) {
@@ -1013,7 +1005,7 @@ function updateCenterStage(food, status) {
   }
 
   if (!food) {
-    centerFoodName.textContent = "掷骰后揭晓";
+    centerFoodName.textContent = "转盘后揭晓";
     foodEmoji.textContent = "🍽️";
     foodImage.removeAttribute("src");
     foodImage.alt = "";

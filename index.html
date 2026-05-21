@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>吃点啥 · 美食大富翁</title>
-    <link rel="stylesheet" href="./style.css?v=dice-front-lock" />
+    <link rel="stylesheet" href="./style.css?v=spinner-wheel" />
   </head>
   <body>
     <main class="game-shell">
@@ -40,11 +40,11 @@
             </div>
             <div class="center-copy">
               <p id="characterMood">胖柯基正在乖乖坐着等开饭</p>
-              <strong id="centerFoodName">掷骰后揭晓</strong>
+              <strong id="centerFoodName">转盘后揭晓</strong>
             </div>
           </section>
-          <div class="dice-pad" aria-label="骰子投掷区" onclick="requestRoll(event)" onpointerup="requestRoll(event)">
-            <button class="board-dice unknown" id="boardDice" type="button" aria-label="在棋盘右下角掷骰子" onclick="requestRoll(event)"></button>
+          <div class="spinner-pad" aria-label="转盘投掷区" onclick="requestRoll(event)" onpointerup="requestRoll(event)">
+            <button class="board-spinner unknown" id="boardDice" type="button" aria-label="在棋盘右下角转动指针" onclick="requestRoll(event)"></button>
           </div>
           <div class="character corgi small mascot sitting" id="mascot" aria-label="行走中的角色">
             <img class="character-photo corgi-photo" src="./assets/characters/corgi.png?v=character-avatars" alt="" />
@@ -66,8 +66,8 @@
         <section class="oracle">
           <div>
             <p class="kicker">饭运已经开始发癫</p>
-            <h2 id="resultTitle">先掷一把</h2>
-            <p id="resultText">棋盘已开机。选一个饭搭子，戳一下骰子，让命运端着饭碗冲过来。</p>
+            <h2 id="resultTitle">先转一把</h2>
+            <p id="resultText">棋盘已开机。选一个饭搭子，戳一下转盘，让命运端着饭碗冲过来。</p>
           </div>
         </section>
 
@@ -118,6 +118,6 @@
       </aside>
     </main>
 
-    <script src="./app.js?v=dice-front-lock"></script>
+    <script src="./app.js?v=spinner-wheel"></script>
   </body>
 </html>

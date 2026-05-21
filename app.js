@@ -315,34 +315,32 @@ function getDiceRenderer(element) {
 }
 
 function createDiceRenderer(element) {
-  element.innerHTML = `<canvas class="dice-canvas" aria-hidden="true"></canvas>`;
-  const canvas = element.querySelector("canvas");
-  const context = canvas.getContext("2d");
+  element.innerHTML = `<img class="dice-image" alt="" draggable="false" /><span class="dice-mark">?</span>`;
+  const image = element.querySelector(".dice-image");
+  const mark = element.querySelector(".dice-mark");
   const renderer = {
     value: null,
     frame: null,
     setValue(value) {
       this.value = value;
-      drawReferenceDice(canvas, context, { topValue: value || 1, question: !value, progress: 1 });
+      image.src = getDiceImageSource(value || 1);
+      mark.hidden = Boolean(value);
     },
     roll(finalValue, duration) {
       window.cancelAnimationFrame(this.frame);
+      mark.hidden = true;
       const start = performance.now();
       const animate = (now) => {
         const progress = Math.min(1, (now - start) / duration);
         const ease = 1 - Math.pow(1 - progress, 3);
-        const previewValue = Math.max(1, Math.min(6, Math.floor(ease * 29) % 6 + 1));
-        drawReferenceDice(canvas, context, {
-          topValue: progress > 0.78 ? finalValue : previewValue,
-          progress,
-          rollTwist: Math.sin(progress * Math.PI * 7) * (1 - progress) * 0.22,
-        });
+        const previewValue = progress > 0.78 ? finalValue : (Math.floor(ease * 31) % 6) + 1;
+        image.src = getDiceImageSource(previewValue);
         if (progress < 1) {
           this.frame = window.requestAnimationFrame(animate);
         } else {
           this.value = finalValue;
           element.dataset.value = finalValue;
-          drawReferenceDice(canvas, context, { topValue: finalValue, progress: 1 });
+          image.src = getDiceImageSource(finalValue);
         }
       };
       this.frame = window.requestAnimationFrame(animate);
@@ -350,6 +348,11 @@ function createDiceRenderer(element) {
   };
   renderer.setValue(null);
   return renderer;
+}
+
+function getDiceImageSource(value) {
+  const key = String(value || 1);
+  return window.DICE_IMAGES?.[key] || `assets/dice/dice-${key}.png`;
 }
 
 function drawReferenceDice(canvas, context, options = {}) {

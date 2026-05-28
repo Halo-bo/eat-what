@@ -135,11 +135,11 @@ function init() {
     boardDice.disabled = false;
     rollBtn.disabled = false;
     setSpinnerValue(boardDice, null);
-    stepText.textContent = "棋盘已重开";
+    if (stepText) stepText.textContent = "棋盘已重开";
     resultTitle.textContent = "新棋盘闪亮登场";
     resultText.textContent = "美食顺序已被命运抓起来摇匀。上一局作废，饭运重新投胎，准备开癫！";
     updateMysticSignal(null, "idle");
-    moveLog.innerHTML = "";
+    if (moveLog) moveLog.innerHTML = "";
     updateCenterStage(getCurrentFood(), "idle");
     positionMascot(false);
   });
@@ -245,7 +245,7 @@ async function rollDice() {
     await spinWheel(spinValue);
 
     const totalSteps = spinValue;
-    stepText.textContent = `转盘停在 ${spinValue}：走 ${totalSteps} 步`;
+    if (stepText) stepText.textContent = `转盘停在 ${spinValue}：走 ${totalSteps} 步`;
 
     appendLog(`指针停在 <strong>${spinValue}</strong>，饭运专车发车 <strong>${totalSteps}</strong> 步。`);
 
@@ -1401,6 +1401,7 @@ function weatherCodeToText(code) {
 }
 
 function appendLog(text) {
+  if (!moveLog) return;
   const item = document.createElement("li");
   item.innerHTML = text;
   moveLog.prepend(item);

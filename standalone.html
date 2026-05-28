@@ -1617,14 +1617,14 @@ button {
 
 .control-panel {
   display: grid;
-  grid-template-rows: auto auto auto auto 1fr;
+  grid-template-rows: minmax(260px, 1fr) auto auto auto;
   gap: 16px;
+  align-content: stretch;
 }
 
 .oracle,
 .signals,
-.characters,
-.log-panel {
+.characters {
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: rgba(255, 255, 255, 0.78);
@@ -1635,7 +1635,7 @@ button {
 .oracle {
   display: block;
   padding: 18px;
-  min-height: 220px;
+  min-height: 260px;
 }
 
 .dice {
@@ -1675,8 +1675,7 @@ button {
   }
 }
 
-.oracle h2,
-.log-panel h2 {
+.oracle h2 {
   margin: 0;
 }
 
@@ -1694,17 +1693,39 @@ button {
 
 .signals {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 92px minmax(0, 1fr);
+  grid-template-rows: 92px 92px;
   gap: 10px;
   padding: 14px;
 }
 
 .signals div {
-  min-height: 86px;
+  min-height: 0;
   padding: 12px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: rgba(255, 255, 255, 0.74);
+}
+
+.signal-card {
+  min-width: 0;
+}
+
+.signal-weather,
+.signal-fortune {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  text-align: center;
+  aspect-ratio: 1;
+}
+
+.signal-mystic {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  display: grid;
+  align-content: center;
+  min-width: 0;
 }
 
 .signals span,
@@ -1719,6 +1740,23 @@ button {
   display: block;
   margin-top: 8px;
   line-height: 1.24;
+}
+
+.signal-weather strong,
+.signal-fortune strong {
+  display: -webkit-box;
+  max-width: 100%;
+  overflow: hidden;
+  font-size: 0.82rem;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.signal-mystic strong {
+  font-size: 1.08rem;
+  line-height: 1.5;
 }
 
 .actions {
@@ -1786,41 +1824,12 @@ button {
   box-shadow: inset 0 0 0 1px rgba(232, 79, 52, 0.14);
 }
 
-.log-panel {
-  min-height: 0;
-  padding: 16px;
-}
-
 .section-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
   margin-bottom: 12px;
-}
-
-#moveLog {
-  display: grid;
-  gap: 8px;
-  max-height: calc(100vh - 455px);
-  overflow: auto;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-#moveLog li {
-  padding: 10px 12px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  background: rgba(255, 255, 255, 0.72);
-  color: var(--muted);
-  font-size: 0.9rem;
-  line-height: 1.45;
-}
-
-#moveLog li strong {
-  color: var(--ink);
 }
 
 @media (max-width: 1120px) {
@@ -1833,9 +1842,6 @@ button {
     grid-template-columns: 1fr;
   }
 
-  #moveLog {
-    max-height: none;
-  }
 }
 
 @media (max-width: 720px) {
@@ -1915,7 +1921,6 @@ button {
   }
 
   .oracle,
-  .signals,
   .character-options,
   .actions {
     grid-template-columns: 1fr;
@@ -2015,8 +2020,7 @@ button {
 
   .oracle,
   .signals,
-  .characters,
-  .log-panel {
+  .characters {
     border-radius: 12px;
   }
 
@@ -2050,13 +2054,13 @@ button {
   }
 
   .signals {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: 72px minmax(0, 1fr);
+    grid-template-rows: 72px 72px;
     gap: 6px;
     padding: 8px;
   }
 
   .signals div {
-    min-height: 68px;
     padding: 8px;
   }
 
@@ -2071,8 +2075,12 @@ button {
     line-height: 1.18;
   }
 
-  .characters,
-  .log-panel {
+  .signal-mystic strong {
+    font-size: 0.86rem;
+    line-height: 1.35;
+  }
+
+  .characters {
     padding: 12px;
   }
 
@@ -2113,14 +2121,6 @@ button {
     min-height: 48px;
   }
 
-  #moveLog {
-    max-height: 180px;
-  }
-
-  #moveLog li {
-    padding: 9px 10px;
-    font-size: 0.82rem;
-  }
 }
 
 @media (max-width: 390px) {
@@ -2237,15 +2237,15 @@ button {
         </section>
 
         <section class="signals" aria-label="今日信号">
-          <div>
+          <div class="signal-card signal-weather">
             <span>天气</span>
             <strong id="weatherText">读取中</strong>
           </div>
-          <div>
+          <div class="signal-card signal-fortune">
             <span>运势</span>
             <strong id="fortuneText">开局待定</strong>
           </div>
-          <div>
+          <div class="signal-card signal-mystic">
             <span>玄学</span>
             <strong id="mysticText">锅气正在打鸣</strong>
           </div>
@@ -2272,14 +2272,6 @@ button {
           <button class="primary" id="rollBtn" type="button" onclick="requestRoll(event)">开摇！</button>
           <button class="secondary" id="shuffleBtn" type="button">重洗饭运</button>
         </div>
-
-        <section class="log-panel">
-          <div class="section-head">
-            <h2>今日落点</h2>
-            <span id="stepText">还没开癫</span>
-          </div>
-          <ol id="moveLog"></ol>
-        </section>
       </aside>
     </main>
 
@@ -2422,11 +2414,11 @@ function init() {
     boardDice.disabled = false;
     rollBtn.disabled = false;
     setSpinnerValue(boardDice, null);
-    stepText.textContent = "棋盘已重开";
+    if (stepText) stepText.textContent = "棋盘已重开";
     resultTitle.textContent = "新棋盘闪亮登场";
     resultText.textContent = "美食顺序已被命运抓起来摇匀。上一局作废，饭运重新投胎，准备开癫！";
     updateMysticSignal(null, "idle");
-    moveLog.innerHTML = "";
+    if (moveLog) moveLog.innerHTML = "";
     updateCenterStage(getCurrentFood(), "idle");
     positionMascot(false);
   });
@@ -2532,7 +2524,7 @@ async function rollDice() {
     await spinWheel(spinValue);
 
     const totalSteps = spinValue;
-    stepText.textContent = `转盘停在 ${spinValue}：走 ${totalSteps} 步`;
+    if (stepText) stepText.textContent = `转盘停在 ${spinValue}：走 ${totalSteps} 步`;
 
     appendLog(`指针停在 <strong>${spinValue}</strong>，饭运专车发车 <strong>${totalSteps}</strong> 步。`);
 
@@ -3688,6 +3680,7 @@ function weatherCodeToText(code) {
 }
 
 function appendLog(text) {
+  if (!moveLog) return;
   const item = document.createElement("li");
   item.innerHTML = text;
   moveLog.prepend(item);

@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>吃点啥 · 美食大富翁</title>
-    <link rel="stylesheet" href="./style.css?v=short-mystic" />
+    <link rel="stylesheet" href="./style.css?v=signal-layout" />
   </head>
   <body>
     <main class="game-shell">
@@ -73,15 +73,15 @@
         </section>
 
         <section class="signals" aria-label="今日信号">
-          <div>
+          <div class="signal-card signal-weather">
             <span>天气</span>
             <strong id="weatherText">读取中</strong>
           </div>
-          <div>
+          <div class="signal-card signal-fortune">
             <span>运势</span>
             <strong id="fortuneText">开局待定</strong>
           </div>
-          <div>
+          <div class="signal-card signal-mystic">
             <span>玄学</span>
             <strong id="mysticText">锅气正在打鸣</strong>
           </div>
@@ -108,17 +108,9 @@
           <button class="primary" id="rollBtn" type="button" onclick="requestRoll(event)">开摇！</button>
           <button class="secondary" id="shuffleBtn" type="button">重洗饭运</button>
         </div>
-
-        <section class="log-panel">
-          <div class="section-head">
-            <h2>今日落点</h2>
-            <span id="stepText">还没开癫</span>
-          </div>
-          <ol id="moveLog"></ol>
-        </section>
       </aside>
     </main>
 
-    <script src="./app.js?v=short-mystic"></script>
+    <script src="./app.js?v=signal-layout"></script>
   </body>
 </html>

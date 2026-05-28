@@ -1610,7 +1610,7 @@ button {
 
 .control-panel {
   display: grid;
-  grid-template-rows: minmax(260px, 1fr) auto auto auto;
+  grid-template-rows: auto auto auto auto;
   gap: 16px;
   align-content: stretch;
 }
@@ -1628,7 +1628,8 @@ button {
 .oracle {
   display: block;
   padding: 18px;
-  min-height: 260px;
+  height: 220px;
+  overflow: auto;
 }
 
 .dice {
@@ -1673,14 +1674,14 @@ button {
 }
 
 .oracle h2 {
-  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-size: clamp(1.85rem, 3.2vw, 2.7rem);
   line-height: 1;
 }
 
 .oracle p:last-child {
   margin: 10px 0 0;
   color: var(--muted);
-  line-height: 1.7;
+  line-height: 1.55;
   white-space: pre-line;
 }
 
@@ -1693,6 +1694,7 @@ button {
 }
 
 .signals div {
+  position: relative;
   min-height: 0;
   padding: 12px;
   border: 1px solid var(--line);
@@ -1707,8 +1709,8 @@ button {
 .signal-weather,
 .signal-fortune {
   display: grid;
-  place-items: center;
-  align-content: center;
+  align-items: center;
+  justify-items: center;
   text-align: center;
   aspect-ratio: 1;
 }
@@ -1729,9 +1731,14 @@ button {
   font-weight: 850;
 }
 
+.signals span {
+  position: absolute;
+  left: 12px;
+  top: 10px;
+}
+
 .signals strong {
   display: block;
-  margin-top: 8px;
   line-height: 1.24;
 }
 
@@ -1748,6 +1755,7 @@ button {
 }
 
 .signal-mystic strong {
+  padding-top: 12px;
   font-size: 1.08rem;
   line-height: 1.5;
 }
@@ -2019,7 +2027,7 @@ button {
 
   .oracle {
     padding: 12px;
-    min-height: 188px;
+    height: 178px;
   }
 
   .dice {
@@ -2043,7 +2051,7 @@ button {
   .oracle p:last-child {
     margin-top: 6px;
     font-size: 0.88rem;
-    line-height: 1.45;
+    line-height: 1.38;
   }
 
   .signals {
@@ -2062,8 +2070,12 @@ button {
     font-size: 0.68rem;
   }
 
+  .signals span {
+    left: 8px;
+    top: 7px;
+  }
+
   .signals strong {
-    margin-top: 5px;
     font-size: 0.78rem;
     line-height: 1.18;
   }

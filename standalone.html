@@ -2541,7 +2541,7 @@ async function rollDice() {
       markActiveTile();
       positionMascot(true);
       updateCenterStage(getCurrentFood(), "walking");
-      updateMysticSignal(getCurrentFood(), "walking");
+      updateMysticSignal(null, "walking");
       await wait(310);
     }
 
@@ -2590,98 +2590,110 @@ function updateMysticSignal(food, status, meta = {}) {
 }
 
 function buildMysticSignal(food, status, meta = {}) {
+  if (status === "walking") return "觅食中。。。";
+
   if (!food) {
-    if (status === "spinning") return "转盘正在摇号，锅铲天线已竖起，等它停下再判饭命";
+    if (status === "spinning") return "觅食中。。。";
     return "转盘待命中：点一下，食物星盘才肯开口胡说八道";
   }
 
   const positionLabel = state.position === 0 ? "起点" : `${String(state.position).padStart(2, "0")}格`;
-  const kindOracle = getKindOracle(food);
-  const foodOracle = getFoodOracle(food);
-  const tagOracle = getTagOracle(food);
-
-  if (status === "walking") {
-    return `路过${positionLabel}「${food.name}」：${food.tag}磁场擦肩而过，${kindOracle.short}`;
-  }
-
   const spinText = meta.spinValue ? `转盘 ${meta.spinValue} 格` : "落点已定";
-  return `${spinText}，停在${positionLabel}「${food.name}」。${foodOracle}${tagOracle} ${kindOracle.long}`;
+  const profile = getMysticProfile(food);
+  const foodBoost = getFoodBoost(food);
+  const fortuneBoost = getFortuneBoost(food, meta.spinValue);
+
+  return `${spinText}停在${positionLabel}「${food.name}」：${profile.element}气${profile.motion}，主${profile.benefit}。${foodBoost}${fortuneBoost}`;
 }
 
-function getKindOracle(food) {
-  const oracles = {
+function getMysticProfile(food) {
+  const profiles = {
     sweet: {
-      short: "甜口星开始给嘴角偷偷充电",
-      long: "甜口星入命，今天适合把烦恼泡进糖霜里，捞出来就变成小废话。",
+      element: "木火",
+      motion: "生发",
+      benefit: "心情回暖",
     },
     warm: {
-      short: "锅气宫升温，胃部开始敲锣",
-      long: "锅气宫发烫，适合吃点有温度的狠角色，给灵魂做一次热乎乎的年检。",
+      element: "火土",
+      motion: "生旺",
+      benefit: "行动力回魂",
     },
     light: {
-      short: "清爽风吹过脑壳，嘴巴准备降噪",
-      long: "清爽星落座，今天别硬刚宇宙，来点轻快的，脑袋会从浆糊变成果冻。",
+      element: "金水",
+      motion: "流通",
+      benefit: "脑袋降噪",
     },
     fun: {
-      short: "快乐宫爆灯，理智暂时请假",
-      long: "快乐宫爆灯，正经人设可以先放进抽屉，嘴巴今天有独立投票权。",
+      element: "火木",
+      motion: "通关",
+      benefit: "快乐开闸",
     },
   };
-  return oracles[food.kind] || oracles.fun;
-}
-
-function getFoodOracle(food) {
-  const specials = {
-    草莓: "草莓红光护体，像一颗小型桃花雷达，专门扫描今日快乐。",
-    橙子: "橙子自带小太阳结界，剥开以后，阴郁会被维 C 当场劝退。",
-    冰激凌: "冰激凌冷气开坛，火气见了它得排队办离职。",
-    蔓越莓: "蔓越莓酸甜两仪阵启动，嘴巴一抖，精神就上线。",
-    开心果: "开心果开口即祥瑞，它笑裂了，说明你今天也该裂开一点快乐。",
-    梨: "梨的水润护盾展开，喉咙收到一封温柔的辞火信。",
-    汉堡: "汉堡夹住天地秩序，肉香在中间担任快乐董事长。",
-    芒果: "芒果香气开屏，夏天本人正在旁边疯狂递眼色。",
-    牛油果: "牛油果绵密成云，胃部小房间开始铺地毯。",
-    核桃: "核桃脑纹发光，虽然不保证变聪明，但气势已经像饭院士。",
-    牛奶: "牛奶小夜灯点亮，尖叫声被折成毛巾放进抽屉。",
-    松子: "松子虽小但香气很会偷袭，注意力已经被它顺手牵走。",
-    披萨: "披萨圆盘开阵，拉丝就是今日宇宙的批准文件。",
-    夏威夷果: "夏威夷果圆滚滚落座，咔嚓一声把无聊炸出局。",
-    甜甜圈: "甜甜圈中间有洞但快乐没漏，糖霜正在给今天盖章。",
-    吐司: "吐司松软云层展开，人生边角料开始变金黄。",
-    榛子: "榛子低调坐镇，坚果老戏骨正在暗中加戏。",
-    腰果: "腰果弯弯绕绕，暗示今天不必走直线，拐弯也能香。",
-    杏仁: "杏仁清脆敲木鱼，烦躁被敲到原地放下执念。",
-    奇异果: "奇异果毛茸茸开坛，酸甜雷电正在唤醒天灵盖。",
-    薯条: "薯条金黄天线已接通，快乐信号满格，番茄酱负责盖章。",
-    炸鸡: "炸鸡外壳咔嚓作响，像命运开奖前清嗓子。",
-    西瓜: "西瓜红瓤升堂，热气被瓜皮押到门口罚站。",
-    可乐: "可乐气泡占卜开始咕嘟，第一口就是快乐开机音。",
-    桃子: "桃子粉光护体，暴躁被软萌结界抱走。",
-    荔枝: "荔枝剥壳结界打开，汁水一爆，嘴巴宣布登基。",
-    咖啡: "咖啡苦香点灯，眼皮收到复工通知。",
-    曲奇: "曲奇圆形法阵启动，饼干屑开始在嘴里办演唱会。",
-    苹果: "苹果红得很有主见，咔嚓一下把健康感拍上桌。",
-    哈密瓜: "哈密瓜甜香缓慢巡游，舌头收到一笔蜜甜奖金。",
-    薯片: "薯片薄脆符纸一响，烦恼立刻变成背景音。",
-    巧克力: "巧克力浓郁入场，烦躁被按进沙发缝里不许说话。",
-    肉串: "肉串举签为令，孜然烟花开始替嘴巴摇旗。",
-    牛排: "牛排纹路开光，仪式感穿着小西装走来了。",
-    火锅: "火锅阴阳锅旋转，红白两派一起给胃做热闹法事。",
-    香肠: "香肠油光发亮，弹牙指数让嘴巴想原地转圈。",
-    起点补给: "起点补给敲响重开锣，饭运系统正在重新加载。",
+  const tagOverrides = {
+    清爽: { element: "金水", motion: "润下", benefit: "烦躁退潮" },
+    清凉: { element: "水气", motion: "润下", benefit: "火气归零" },
+    润润: { element: "白金", motion: "收敛", benefit: "情绪顺毛" },
+    温柔: { element: "土气", motion: "安中", benefit: "内心落座" },
+    沸腾: { element: "火土", motion: "生旺", benefit: "元气开锅" },
+    醒脑: { element: "火气", motion: "升腾", benefit: "专注归位" },
+    醒神: { element: "木气", motion: "生发", benefit: "灵感冒头" },
+    补脑: { element: "金木", motion: "定盘", benefit: "思路收束" },
   };
-  return specials[food.name] || `${food.name}磁场上线，${shortVibe(food)}。`;
+  return tagOverrides[food.tag] || profiles[food.kind] || profiles.fun;
 }
 
-function getTagOracle(food) {
-  const index = (food.name.length + food.tag.length + state.position + new Date().getDate()) % 4;
-  const lines = [
-    `${food.tag}指数冒泡，像小锅盖在脑门上跳踢踏。`,
-    `${food.tag}气场偏旺，嘴巴已经开始偷偷排队。`,
-    `${food.tag}能量盖章，本格属于「不吃不太礼貌」。`,
-    `${food.tag}波纹扩散，胃部雷达哔哔作响。`,
-  ];
-  return lines[index];
+function getFoodBoost(food) {
+  const boosts = {
+    草莓: "桃花运+1，嘴角回春。",
+    橙子: "低电量补阳，精神开窗。",
+    冰激凌: "火气下线，暴躁退潮。",
+    蔓越莓: "肝木顺气，灵魂不打结。",
+    开心果: "开口见喜，社交破冰。",
+    梨: "白金清润，情绪顺毛。",
+    汉堡: "土气托底，空心感填满。",
+    芒果: "黄气生旺，疲惫撤退。",
+    牛油果: "厚土安中，内心落座。",
+    核桃: "坚果定神，思路收束。",
+    牛奶: "白金安神，尖锐感泡软。",
+    松子: "松香聚气，灵感排队。",
+    披萨: "圆盘成局，人缘开张。",
+    夏威夷果: "金气收敛，专注归位。",
+    甜甜圈: "圆满补票，快乐归仓。",
+    吐司: "土气软托，心情着陆。",
+    榛子: "坚果藏金，气场稳住。",
+    腰果: "弯月招财，好运拐进门。",
+    杏仁: "白金清透，烦躁静音。",
+    奇异果: "青绿生发，困意退群。",
+    薯条: "金黄旺土，快乐落袋。",
+    炸鸡: "火气升腾，行动力满格。",
+    西瓜: "水火既济，心情退烧。",
+    可乐: "气泡走水，闷气顶出。",
+    桃子: "粉光招喜，情绪软化。",
+    荔枝: "红白相生，甜运爆汁。",
+    咖啡: "苦香醒火，专注返岗。",
+    曲奇: "焦糖土气，安全感归位。",
+    苹果: "赤色入心，拖延被拍醒。",
+    哈密瓜: "蜜黄旺脾，能量回升。",
+    薯片: "薄脆破郁，坏心情碎掉。",
+    巧克力: "甘味补心，emo 封印。",
+    肉串: "火土开炉，气势升温。",
+    牛排: "厚土生金，底气加仓。",
+    火锅: "阴阳调和，低迷翻滚。",
+    香肠: "火气通关，快乐弹起。",
+    起点补给: "归元重启，饭运开盘。",
+  };
+  return boosts[food.name] || `${food.tag}入局，顺气+1。`;
+}
+
+function getFortuneBoost(food, spinValue) {
+  const lucky = spinValue || ((state.position + food.name.length) % 8) + 1;
+  const weatherTone = {
+    hot: "热天调气",
+    rain: "雨天稳盘",
+    cool: "微凉生旺",
+    mild: "平稳推运",
+  }[state.weather?.mood] || "顺势补签";
+  return `${weatherTone}，幸运数 ${lucky} 稳签。`;
 }
 
 function setSpinnerValue(element, value) {

@@ -2597,13 +2597,11 @@ function buildMysticSignal(food, status, meta = {}) {
     return "转盘待命中：点一下，食物星盘才肯开口胡说八道";
   }
 
-  const positionLabel = state.position === 0 ? "起点" : `${String(state.position).padStart(2, "0")}格`;
-  const spinText = meta.spinValue ? `转盘 ${meta.spinValue} 格` : "落点已定";
   const profile = getMysticProfile(food);
   const foodBoost = getFoodBoost(food);
   const fortuneBoost = getFortuneBoost(food, meta.spinValue);
 
-  return `${spinText}停在${positionLabel}「${food.name}」：${profile.element}气${profile.motion}，主${profile.benefit}。${foodBoost}${fortuneBoost}`;
+  return `${profile.element}气${profile.motion}，主${profile.benefit}。${foodBoost}${fortuneBoost}`;
 }
 
 function getMysticProfile(food) {

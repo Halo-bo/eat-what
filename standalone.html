@@ -2388,15 +2388,6 @@ const fortunes = [
   { name: "稳稳落袋签", boost: "踏实", shift: 0, line: "稳稳签一落，胃部董事会全票通过：别整花活，吃它就像给灵魂盖章。" },
 ];
 
-const mystics = [
-  "筷子指向东南，说明嘴巴已经替大脑偷偷报名",
-  "今日锅铲指数 87%，再不吃点香的，锅铲要出来主持公道",
-  "米饭星冲进食欲宫，碳水发言权突然变得很大声",
-  "辣椒守护神已上线，犹豫会被自动翻炒三十秒",
-  "汤勺发出神秘滴滴声：需要一点热乎的精神搓澡",
-  "甜口能量爆表，允许快乐超标，允许嘴角离家出走",
-];
-
 const fallbackWeather = [
   { text: "多云，天空在假装自己是棉花糖", mood: "mild" },
   { text: "小雨，路面在给饭局铺氛围感", mood: "rain" },
@@ -2406,11 +2397,10 @@ const fallbackWeather = [
 
 function init() {
   state.fortune = fortunes[new Date().getDate() % fortunes.length];
-  state.mystic = mystics[(new Date().getMonth() + new Date().getDate()) % mystics.length];
   state.weather = fallbackWeather[new Date().getHours() % fallbackWeather.length];
 
   fortuneText.textContent = state.fortune.name;
-  mysticText.textContent = state.mystic;
+  updateMysticSignal(null, "idle");
   weatherText.textContent = state.weather.text;
 
   shuffleBoard();
@@ -2435,6 +2425,7 @@ function init() {
     stepText.textContent = "棋盘已重开";
     resultTitle.textContent = "新棋盘闪亮登场";
     resultText.textContent = "美食顺序已被命运抓起来摇匀。上一局作废，饭运重新投胎，准备开癫！";
+    updateMysticSignal(null, "idle");
     moveLog.innerHTML = "";
     updateCenterStage(getCurrentFood(), "idle");
     positionMascot(false);
@@ -2535,6 +2526,7 @@ async function rollDice() {
 
   try {
     updateCenterStage(getCurrentFood(), "walking");
+    updateMysticSignal(null, "spinning");
 
     const spinValue = Math.floor(Math.random() * 8) + 1;
     await spinWheel(spinValue);
@@ -2549,6 +2541,7 @@ async function rollDice() {
       markActiveTile();
       positionMascot(true);
       updateCenterStage(getCurrentFood(), "walking");
+      updateMysticSignal(getCurrentFood(), "walking");
       await wait(310);
     }
 
@@ -2557,6 +2550,7 @@ async function rollDice() {
     resultTitle.textContent = food.name;
     resultText.textContent = reason;
     updateCenterStage(food, "landed");
+    updateMysticSignal(food, "landed", { spinValue });
     appendLog(state.position === 0
       ? `回到 <strong>起点</strong>：触发 <strong>${food.name}</strong>。`
       : `落在第 <strong>${String(state.position).padStart(2, "0")}</strong> 格：<strong>${food.name}</strong>。`);
@@ -2566,6 +2560,7 @@ async function rollDice() {
     resultTitle.textContent = "转盘卡壳了";
     resultText.textContent = "命运刚才脚滑了一下。再戳一次，饭局马上重启，别让宇宙装死。";
     updateCenterStage(getCurrentFood(), "idle");
+    updateMysticSignal(getCurrentFood(), "idle");
   } finally {
     rollBtn.disabled = false;
     boardDice.disabled = false;
@@ -2587,6 +2582,106 @@ function getStartRewardFood(roll) {
     icon: fallback.icon,
     vibe: "你竟然绕回起点，说明饭运系统重启成功。奖励一份补给，嘴巴原地复活，胃部开始放烟花。",
   };
+}
+
+function updateMysticSignal(food, status, meta = {}) {
+  state.mystic = buildMysticSignal(food, status, meta);
+  mysticText.textContent = state.mystic;
+}
+
+function buildMysticSignal(food, status, meta = {}) {
+  if (!food) {
+    if (status === "spinning") return "转盘正在摇号，锅铲天线已竖起，等它停下再判饭命";
+    return "转盘待命中：点一下，食物星盘才肯开口胡说八道";
+  }
+
+  const positionLabel = state.position === 0 ? "起点" : `${String(state.position).padStart(2, "0")}格`;
+  const kindOracle = getKindOracle(food);
+  const foodOracle = getFoodOracle(food);
+  const tagOracle = getTagOracle(food);
+
+  if (status === "walking") {
+    return `路过${positionLabel}「${food.name}」：${food.tag}磁场擦肩而过，${kindOracle.short}`;
+  }
+
+  const spinText = meta.spinValue ? `转盘 ${meta.spinValue} 格` : "落点已定";
+  return `${spinText}，停在${positionLabel}「${food.name}」。${foodOracle}${tagOracle} ${kindOracle.long}`;
+}
+
+function getKindOracle(food) {
+  const oracles = {
+    sweet: {
+      short: "甜口星开始给嘴角偷偷充电",
+      long: "甜口星入命，今天适合把烦恼泡进糖霜里，捞出来就变成小废话。",
+    },
+    warm: {
+      short: "锅气宫升温，胃部开始敲锣",
+      long: "锅气宫发烫，适合吃点有温度的狠角色，给灵魂做一次热乎乎的年检。",
+    },
+    light: {
+      short: "清爽风吹过脑壳，嘴巴准备降噪",
+      long: "清爽星落座，今天别硬刚宇宙，来点轻快的，脑袋会从浆糊变成果冻。",
+    },
+    fun: {
+      short: "快乐宫爆灯，理智暂时请假",
+      long: "快乐宫爆灯，正经人设可以先放进抽屉，嘴巴今天有独立投票权。",
+    },
+  };
+  return oracles[food.kind] || oracles.fun;
+}
+
+function getFoodOracle(food) {
+  const specials = {
+    草莓: "草莓红光护体，像一颗小型桃花雷达，专门扫描今日快乐。",
+    橙子: "橙子自带小太阳结界，剥开以后，阴郁会被维 C 当场劝退。",
+    冰激凌: "冰激凌冷气开坛，火气见了它得排队办离职。",
+    蔓越莓: "蔓越莓酸甜两仪阵启动，嘴巴一抖，精神就上线。",
+    开心果: "开心果开口即祥瑞，它笑裂了，说明你今天也该裂开一点快乐。",
+    梨: "梨的水润护盾展开，喉咙收到一封温柔的辞火信。",
+    汉堡: "汉堡夹住天地秩序，肉香在中间担任快乐董事长。",
+    芒果: "芒果香气开屏，夏天本人正在旁边疯狂递眼色。",
+    牛油果: "牛油果绵密成云，胃部小房间开始铺地毯。",
+    核桃: "核桃脑纹发光，虽然不保证变聪明，但气势已经像饭院士。",
+    牛奶: "牛奶小夜灯点亮，尖叫声被折成毛巾放进抽屉。",
+    松子: "松子虽小但香气很会偷袭，注意力已经被它顺手牵走。",
+    披萨: "披萨圆盘开阵，拉丝就是今日宇宙的批准文件。",
+    夏威夷果: "夏威夷果圆滚滚落座，咔嚓一声把无聊炸出局。",
+    甜甜圈: "甜甜圈中间有洞但快乐没漏，糖霜正在给今天盖章。",
+    吐司: "吐司松软云层展开，人生边角料开始变金黄。",
+    榛子: "榛子低调坐镇，坚果老戏骨正在暗中加戏。",
+    腰果: "腰果弯弯绕绕，暗示今天不必走直线，拐弯也能香。",
+    杏仁: "杏仁清脆敲木鱼，烦躁被敲到原地放下执念。",
+    奇异果: "奇异果毛茸茸开坛，酸甜雷电正在唤醒天灵盖。",
+    薯条: "薯条金黄天线已接通，快乐信号满格，番茄酱负责盖章。",
+    炸鸡: "炸鸡外壳咔嚓作响，像命运开奖前清嗓子。",
+    西瓜: "西瓜红瓤升堂，热气被瓜皮押到门口罚站。",
+    可乐: "可乐气泡占卜开始咕嘟，第一口就是快乐开机音。",
+    桃子: "桃子粉光护体，暴躁被软萌结界抱走。",
+    荔枝: "荔枝剥壳结界打开，汁水一爆，嘴巴宣布登基。",
+    咖啡: "咖啡苦香点灯，眼皮收到复工通知。",
+    曲奇: "曲奇圆形法阵启动，饼干屑开始在嘴里办演唱会。",
+    苹果: "苹果红得很有主见，咔嚓一下把健康感拍上桌。",
+    哈密瓜: "哈密瓜甜香缓慢巡游，舌头收到一笔蜜甜奖金。",
+    薯片: "薯片薄脆符纸一响，烦恼立刻变成背景音。",
+    巧克力: "巧克力浓郁入场，烦躁被按进沙发缝里不许说话。",
+    肉串: "肉串举签为令，孜然烟花开始替嘴巴摇旗。",
+    牛排: "牛排纹路开光，仪式感穿着小西装走来了。",
+    火锅: "火锅阴阳锅旋转，红白两派一起给胃做热闹法事。",
+    香肠: "香肠油光发亮，弹牙指数让嘴巴想原地转圈。",
+    起点补给: "起点补给敲响重开锣，饭运系统正在重新加载。",
+  };
+  return specials[food.name] || `${food.name}磁场上线，${shortVibe(food)}。`;
+}
+
+function getTagOracle(food) {
+  const index = (food.name.length + food.tag.length + state.position + new Date().getDate()) % 4;
+  const lines = [
+    `${food.tag}指数冒泡，像小锅盖在脑门上跳踢踏。`,
+    `${food.tag}气场偏旺，嘴巴已经开始偷偷排队。`,
+    `${food.tag}能量盖章，本格属于「不吃不太礼貌」。`,
+    `${food.tag}波纹扩散，胃部雷达哔哔作响。`,
+  ];
+  return lines[index];
 }
 
 function setSpinnerValue(element, value) {

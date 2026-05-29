@@ -1628,10 +1628,17 @@ button {
 
 .oracle {
   display: grid;
-  align-items: center;
+  grid-template-rows: auto minmax(0, 1fr);
+  align-items: stretch;
   min-height: 0;
   padding: 18px;
   overflow: hidden;
+}
+
+.oracle > div {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  min-height: 0;
 }
 
 .dice {
@@ -1673,6 +1680,7 @@ button {
 
 .oracle h2 {
   margin: 0;
+  align-self: end;
 }
 
 .oracle h2 {
@@ -1682,7 +1690,8 @@ button {
 
 .oracle p:last-child {
   display: -webkit-box;
-  margin: 10px 0 0;
+  align-self: start;
+  margin: 12px 0 0;
   color: var(--muted);
   line-height: 1.48;
   overflow: hidden;

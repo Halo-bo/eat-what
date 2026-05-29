@@ -1610,9 +1610,9 @@ button {
 
 .control-panel {
   display: grid;
-  grid-template-rows: 210px 210px 210px 54px;
+  grid-template-rows: repeat(3, minmax(240px, 1fr)) 54px;
   gap: 14px;
-  min-height: 0;
+  min-height: calc(100vh - 48px);
   align-content: start;
 }
 
@@ -1794,7 +1794,9 @@ button {
 
 .character-option {
   display: grid;
-  gap: 7px;
+  grid-template-rows: minmax(0, 1fr) auto;
+  align-content: center;
+  gap: 10px;
   min-height: 0;
   place-items: center;
   padding: 10px 8px;
@@ -1808,8 +1810,8 @@ button {
 
 .character-choice-avatar {
   display: block;
-  width: 64px;
-  height: 64px;
+  width: 82px;
+  height: 82px;
   border: 2px solid rgba(255, 255, 255, 0.88);
   border-radius: 50%;
   object-fit: cover;
